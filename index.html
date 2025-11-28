@@ -15,16 +15,33 @@
             --primary: #6366f1;
             --secondary: #8b5cf6;
             --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
             --dark: #0f172a;
             --darker: #020617;
             --light: #f1f5f9;
+            --card-bg: rgba(99, 102, 241, 0.05);
+            --card-border: rgba(99, 102, 241, 0.2);
+            --text-primary: #f1f5f9;
+            --text-secondary: rgba(241, 245, 249, 0.8);
+        }
+
+        [data-theme="light"] {
+            --dark: #f1f5f9;
+            --darker: #ffffff;
+            --light: #0f172a;
+            --card-bg: rgba(99, 102, 241, 0.08);
+            --card-border: rgba(99, 102, 241, 0.25);
+            --text-primary: #0f172a;
+            --text-secondary: rgba(15, 23, 42, 0.8);
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--darker);
-            color: var(--light);
+            color: var(--text-primary);
             overflow-x: hidden;
+            transition: background 0.5s ease, color 0.5s ease;
         }
 
         /* Animated Background */
@@ -36,6 +53,7 @@
             height: 100%;
             z-index: -1;
             background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            transition: background 0.5s ease;
         }
 
         .bg-animation::before {
@@ -56,9 +74,6 @@
         /* Floating particles */
         .particle {
             position: fixed;
-            width: 4px;
-            height: 4px;
-            background: var(--primary);
             border-radius: 50%;
             pointer-events: none;
             opacity: 0.6;
@@ -66,8 +81,36 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            50% { transform: translateY(-100vh) translateX(50px); }
+            0%, 100% { transform: translateY(0) translateX(0) scale(1); }
+            50% { transform: translateY(-100vh) translateX(50px) scale(1.5); }
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 50px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .theme-icon {
+            width: 24px;
+            height: 24px;
+            transition: all 0.3s;
         }
 
         /* Navigation */
@@ -79,7 +122,12 @@
             backdrop-filter: blur(10px);
             padding: 1rem 2rem;
             z-index: 1000;
-            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            border-bottom: 1px solid var(--card-border);
+            transition: all 0.5s ease;
+        }
+
+        [data-theme="light"] nav {
+            background: rgba(241, 245, 249, 0.8);
         }
 
         nav ul {
@@ -91,7 +139,7 @@
         }
 
         nav a {
-            color: var(--light);
+            color: var(--text-primary);
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s;
@@ -109,7 +157,7 @@
             transition: width 0.3s;
         }
 
-        nav a:hover::after {
+        nav a:hover::after, nav a.active::after {
             width: 100%;
         }
 
@@ -124,6 +172,36 @@
             margin-top: 60px;
         }
 
+        .hero-content {
+            max-width: 1000px;
+        }
+
+        .profile-image-container {
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 5px solid var(--primary);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.4);
+            object-fit: cover;
+            transition: all 0.5s;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 30px 80px rgba(99, 102, 241, 0.6);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
         .hero-content h1 {
             font-size: clamp(2.5rem, 8vw, 5rem);
             background: linear-gradient(135deg, var(--primary), var(--accent));
@@ -131,14 +209,14 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 1rem;
-            animation: fadeInUp 1s ease-out;
+            animation: fadeInUp 1s ease-out 0.2s backwards;
         }
 
         .hero-content .subtitle {
             font-size: clamp(1.2rem, 3vw, 1.8rem);
-            color: var(--light);
+            color: var(--text-primary);
             margin-bottom: 2rem;
-            animation: fadeInUp 1s ease-out 0.2s backwards;
+            animation: fadeInUp 1s ease-out 0.4s backwards;
         }
 
         .hero-content .description {
@@ -146,8 +224,8 @@
             margin: 0 auto 2rem;
             font-size: 1.1rem;
             line-height: 1.6;
-            color: rgba(241, 245, 249, 0.8);
-            animation: fadeInUp 1s ease-out 0.4s backwards;
+            color: var(--text-secondary);
+            animation: fadeInUp 1s ease-out 0.6s backwards;
         }
 
         @keyframes fadeInUp {
@@ -161,12 +239,46 @@
             }
         }
 
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin: 2rem 0;
+            animation: fadeInUp 1s ease-out 0.8s backwards;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px) scale(1.1);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .social-link svg {
+            width: 24px;
+            height: 24px;
+        }
+
         .cta-buttons {
             display: flex;
             gap: 1rem;
             justify-content: center;
             flex-wrap: wrap;
-            animation: fadeInUp 1s ease-out 0.6s backwards;
+            animation: fadeInUp 1s ease-out 1s backwards;
         }
 
         .btn {
@@ -178,7 +290,9 @@
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .btn-primary {
@@ -194,12 +308,13 @@
 
         .btn-secondary {
             background: transparent;
-            color: var(--light);
+            color: var(--text-primary);
             border: 2px solid var(--primary);
         }
 
         .btn-secondary:hover {
             background: var(--primary);
+            color: white;
             transform: translateY(-3px);
         }
 
@@ -229,8 +344,8 @@
         }
 
         .stat-card {
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
             border-radius: 20px;
             padding: 2rem;
             text-align: center;
@@ -277,7 +392,7 @@
 
         .stat-label {
             font-size: 1rem;
-            color: rgba(241, 245, 249, 0.8);
+            color: var(--text-secondary);
             margin-top: 0.5rem;
         }
 
@@ -288,8 +403,8 @@
         }
 
         .exp-card {
-            background: rgba(99, 102, 241, 0.05);
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
             border-radius: 20px;
             padding: 2rem;
             transition: all 0.3s;
@@ -329,7 +444,7 @@
 
         .exp-title {
             font-size: 1.5rem;
-            color: var(--light);
+            color: var(--text-primary);
             margin-bottom: 0.5rem;
         }
 
@@ -339,12 +454,12 @@
         }
 
         .exp-date {
-            color: rgba(241, 245, 249, 0.6);
+            color: var(--text-secondary);
             font-size: 0.9rem;
         }
 
         .exp-description {
-            color: rgba(241, 245, 249, 0.8);
+            color: var(--text-secondary);
             line-height: 1.6;
         }
 
@@ -356,12 +471,13 @@
         }
 
         .project-card {
-            background: rgba(99, 102, 241, 0.05);
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
             border-radius: 20px;
             padding: 2rem;
             transition: all 0.3s;
             cursor: pointer;
+            position: relative;
         }
 
         .project-card:hover {
@@ -373,13 +489,19 @@
         .project-title {
             font-size: 1.3rem;
             margin-bottom: 1rem;
-            color: var(--light);
+            color: var(--text-primary);
         }
 
         .project-description {
-            color: rgba(241, 245, 249, 0.8);
+            color: var(--text-secondary);
             line-height: 1.6;
             margin-bottom: 1rem;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .project-link {
@@ -387,10 +509,19 @@
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .project-link:hover {
             color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .project-link svg {
+            width: 16px;
+            height: 16px;
         }
 
         /* Skills Section */
@@ -401,8 +532,8 @@
         }
 
         .skill-category {
-            background: rgba(99, 102, 241, 0.05);
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
             border-radius: 20px;
             padding: 2rem;
         }
@@ -421,7 +552,7 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 0.5rem;
-            color: var(--light);
+            color: var(--text-primary);
         }
 
         .skill-bar {
@@ -447,8 +578,8 @@
         }
 
         .contact-card {
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
             border-radius: 20px;
             padding: 2rem;
             text-align: center;
@@ -461,8 +592,13 @@
         }
 
         .contact-icon {
-            font-size: 2rem;
             margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .contact-icon svg {
+            width: 48px;
+            height: 48px;
         }
 
         .contact-card a {
@@ -475,12 +611,46 @@
             color: var(--accent);
         }
 
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateX(400px);
+            transition: all 0.3s;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-color: var(--success);
+        }
+
+        .notification.warning {
+            border-color: var(--warning);
+        }
+
         /* Footer */
         footer {
             text-align: center;
             padding: 2rem;
             background: rgba(15, 23, 42, 0.8);
-            border-top: 1px solid rgba(99, 102, 241, 0.2);
+            border-top: 1px solid var(--card-border);
+            transition: all 0.5s ease;
+        }
+
+        [data-theme="light"] footer {
+            background: rgba(241, 245, 249, 0.8);
         }
 
         /* Scroll Animation */
@@ -496,12 +666,23 @@
         }
 
         @media (max-width: 768px) {
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 10px;
+            }
+
             nav ul {
                 gap: 1rem;
             }
 
             section {
                 padding: 3rem 1rem;
+            }
+
+            .profile-image {
+                width: 150px;
+                height: 150px;
             }
         }
     </style>
@@ -511,6 +692,24 @@
     
     <!-- Floating Particles -->
     <div id="particles"></div>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" id="themeToggle">
+        <svg class="theme-icon" id="themeIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
 
     <!-- Navigation -->
     <nav>
@@ -527,16 +726,64 @@
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
-            <h1>Zhong Xian Sim</h1>
+            <div class="profile-image-container">
+                <!-- CUSTOMIZE: Replace with your image URL -->
+                <img src="https://media.licdn.com/dms/image/v2/D5603AQF7_z3GZIqHUg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1731061514308?e=1766016000&v=beta&t=4nsTY95NTK4UcQ-bMRTQ2uwwM22tlLYRQfhCSlQ9Z3c" alt="Zhong Xian Sim" class="profile-image">
+            </div>
+            <h1 id="nameTitle">Zhong Xian Sim</h1>
             <div class="subtitle">Electrical-Mechatronics Engineer</div>
             <div class="description">
                 Passionate about robotics, AI, and innovative engineering solutions. 
                 Dean's List holder for 8 semesters with expertise in mechatronics systems, 
                 machine learning, and embedded systems design.
             </div>
+
+            <!-- Social Links with SVG Icons -->
+            <div class="social-links">
+                <!-- CUSTOMIZE: Update your GitHub username -->
+                <a href="https://github.com/simzx02" target="_blank" class="social-link" title="GitHub">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </a>
+                <!-- CUSTOMIZE: Update your LinkedIn profile -->
+                <a href="https://www.linkedin.com/in/simzhongxian/" target="_blank" class="social-link" title="LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                </a>
+                <!-- CUSTOMIZE: Add your email -->
+                <a href="mailto:simxian@graduate.utm.my" class="social-link" title="Email">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                </a>
+                <!-- CUSTOMIZE: Add ResearchGate or other academic profiles -->
+                <a href="#" class="social-link" title="Research">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    </svg>
+                </a>
+            </div>
+
             <div class="cta-buttons">
-                <a href="#projects" class="btn btn-primary">View My Work</a>
-                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+                <a href="#projects" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                    View My Work
+                </a>
+                <a href="#contact" class="btn btn-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    Get In Touch
+                </a>
             </div>
         </div>
     </section>
@@ -546,19 +793,19 @@
         <h2 class="section-title scroll-reveal">Academic Excellence</h2>
         <div class="stats-grid">
             <div class="stat-card scroll-reveal">
-                <div class="stat-number">3.95</div>
+                <div class="stat-number" data-target="3.95">0</div>
                 <div class="stat-label">CGPA / 4.0</div>
             </div>
             <div class="stat-card scroll-reveal">
-                <div class="stat-number">8</div>
+                <div class="stat-number" data-target="8">0</div>
                 <div class="stat-label">Dean's List Semesters</div>
             </div>
             <div class="stat-card scroll-reveal">
-                <div class="stat-number">7.0</div>
+                <div class="stat-number" data-target="7.0">0</div>
                 <div class="stat-label">IELTS Band</div>
             </div>
             <div class="stat-card scroll-reveal">
-                <div class="stat-number">5+</div>
+                <div class="stat-number" data-target="5">0</div>
                 <div class="stat-label">Major Projects</div>
             </div>
         </div>
@@ -622,7 +869,23 @@
                     AI-powered cardiovascular disease prediction system integrating IoT sensors with neural networks. 
                     Uses MAX30102 pulse oximeter and blood pressure monitoring for real-time health insights.
                 </div>
-                <a href="https://github.com/simzx02/cardio" target="_blank" class="project-link">View on GitHub →</a>
+                <div class="project-links">
+                    <!-- CUSTOMIZE: Update your GitHub repo URLs -->
+                    <a href="https://github.com/simzx02/cardio" target="_blank" class="project-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                        </svg>
+                        GitHub
+                    </a>
+                    <a href="#" class="project-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                        Demo
+                    </a>
+                </div>
             </div>
 
             <div class="project-card scroll-reveal">
@@ -631,7 +894,16 @@
                     Startup project developing an intelligent parking management solution. 
                     Awarded RM2k at Student Innovator Challenge and RM5k seed grant from The Next Big Thing Competition.
                 </div>
-                <a href="#" class="project-link">Learn More →</a>
+                <div class="project-links">
+                    <a href="#" class="project-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="16" x2="12" y2="12"/>
+                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                        </svg>
+                        Learn More
+                    </a>
+                </div>
             </div>
 
             <div class="project-card scroll-reveal">
@@ -640,7 +912,14 @@
                     Smart manufacturing system using AI-trained computer vision to detect defects in contact lens packaging. 
                     Integrates pneumatic systems to reduce manufacturing defects.
                 </div>
-                <a href="https://github.com/simzx02/Capstone-Contact-Lens-Packaging-Detector-Optimizer" target="_blank" class="project-link">View on GitHub →</a>
+                <div class="project-links">
+                    <a href="https://github.com/simzx02/Capstone-Contact-Lens-Packaging-Detector-Optimizer" target="_blank" class="project-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
             </div>
 
             <div class="project-card scroll-reveal">
@@ -649,7 +928,16 @@
                     Autonomous robot designed to navigate grids, detect high radiation materials, and display data 
                     using 7-segment displays. Complete with CAD design and embedded C programming.
                 </div>
-                <a href="#" class="project-link">Learn More →</a>
+                <div class="project-links">
+                    <a href="#" class="project-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="16" x2="12" y2="12"/>
+                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                        </svg>
+                        Details
+                    </a>
+                </div>
             </div>
 
             <div class="project-card scroll-reveal">
@@ -658,7 +946,16 @@
                     Arduino-based PID feedback control system for water level management. 
                     Practical implementation of control theory in mechatronic systems.
                 </div>
-                <a href="#" class="project-link">Learn More →</a>
+                <div class="project-links">
+                    <a href="#" class="project-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="16" x2="12" y2="12"/>
+                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                        </svg>
+                        Details
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -730,23 +1027,46 @@
         <h2 class="section-title scroll-reveal">Get In Touch</h2>
         <div class="contact-grid">
             <div class="contact-card scroll-reveal">
-                <div class="contact-icon">📧</div>
+                <div class="contact-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                </div>
                 <h3>Email</h3>
+                <!-- CUSTOMIZE: Update your email -->
                 <a href="mailto:simxian@graduate.utm.my">simxian@graduate.utm.my</a><br>
                 <a href="mailto:zex.sim02@gmail.com">zex.sim02@gmail.com</a>
             </div>
             <div class="contact-card scroll-reveal">
-                <div class="contact-icon">💼</div>
+                <div class="contact-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                        <rect x="2" y="9" width="4" height="12"/>
+                        <circle cx="4" cy="4" r="2"/>
+                    </svg>
+                </div>
                 <h3>LinkedIn</h3>
+                <!-- CUSTOMIZE: Update your LinkedIn -->
                 <a href="https://www.linkedin.com/in/simzhongxian/" target="_blank">linkedin.com/in/simzhongxian</a>
             </div>
             <div class="contact-card scroll-reveal">
-                <div class="contact-icon">📱</div>
+                <div class="contact-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                </div>
                 <h3>Phone</h3>
+                <!-- CUSTOMIZE: Update your phone -->
                 <a href="tel:+60146002369">+6014-6002369</a>
             </div>
             <div class="contact-card scroll-reveal">
-                <div class="contact-icon">🇲🇾</div>
+                <div class="contact-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                </div>
                 <h3>Location</h3>
                 <p>Johor, Malaysia</p>
             </div>
@@ -756,33 +1076,108 @@
     <!-- Footer -->
     <footer>
         <p>&copy; 2025 Zhong Xian Sim. All rights reserved.</p>
-        <p>Built with passion for engineering excellence</p>
+        <p>Built with passion for engineering excellence ⚡</p>
     </footer>
 
     <script>
-        // Create floating particles
+        // ============================================
+        // THEME TOGGLE FUNCTIONALITY
+        // ============================================
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+            
+            showNotification(`${newTheme === 'dark' ? '🌙 Dark' : '☀️ Light'} mode activated`, 'success');
+        });
+
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                // Sun icon
+                themeIcon.innerHTML = `
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                `;
+            } else {
+                // Moon icon
+                themeIcon.innerHTML = `
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                `;
+            }
+        }
+
+        // ============================================
+        // NOTIFICATION SYSTEM
+        // ============================================
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            
+            // Show notification
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            // Hide after 3 seconds
+            setTimeout(() => notification.classList.remove('show'), 3000);
+        }
+
+        // ============================================
+        // FLOATING PARTICLES
+        // ============================================
         const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 30; i++) {
+        const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#10b981'];
+        
+        for (let i = 0; i < 50; i++) {
             const particle = document.createElement('div');
             particle.className = 'particle';
+            particle.style.width = (Math.random() * 4 + 2) + 'px';
+            particle.style.height = particle.style.width;
             particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
             particle.style.animationDelay = Math.random() * 15 + 's';
-            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
             particlesContainer.appendChild(particle);
         }
 
-        // Smooth scrolling
+        // ============================================
+        // SMOOTH SCROLLING
+        // ============================================
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    target.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start' 
+                    });
                 }
             });
         });
 
-        // Scroll reveal animation
+        // ============================================
+        // SCROLL REVEAL ANIMATION
+        // ============================================
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -803,25 +1198,44 @@
                             }, 100);
                         });
                     }
+                    
+                    // Animate stat numbers
+                    if (entry.target.classList.contains('stat-card')) {
+                        const statNumber = entry.target.querySelector('.stat-number');
+                        animateNumber(statNumber);
+                    }
                 }
             });
         }, observerOptions);
 
         document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
 
-        // Parallax effect on hero section
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero-content');
-            if (hero) {
-                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-                hero.style.opacity = 1 - scrolled / 700;
-            }
-        });
+        // ============================================
+        // ANIMATE NUMBERS (STATS)
+        // ============================================
+        function animateNumber(element) {
+            const target = parseFloat(element.getAttribute('data-target'));
+            const duration = 2000;
+            const increment = target / (duration / 16);
+            let current = 0;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current * 10) / 10;
+                }
+            }, 16);
+        }
 
-        // Active nav link on scroll
+        // ============================================
+        // ACTIVE NAV LINK ON SCROLL
+        // ============================================
         window.addEventListener('scroll', () => {
             let current = '';
+            
             document.querySelectorAll('section').forEach(section => {
                 const sectionTop = section.offsetTop;
                 const sectionHeight = section.clientHeight;
@@ -837,7 +1251,244 @@
                 }
             });
         });
+
+        // ============================================
+        // PARALLAX EFFECT ON HERO
+        // ============================================
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero-content');
+            
+            if (hero && scrolled < window.innerHeight) {
+                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+                hero.style.opacity = 1 - scrolled / 800;
+            }
+        });
+
+        // ============================================
+        // EASTER EGGS & HIDDEN FEATURES
+        // ============================================
+        
+        // 1. Secret code typing
+        let secretCode = '';
+        let codeTimer;
+        
+        document.addEventListener('keypress', (e) => {
+            secretCode += e.key.toLowerCase();
+            
+            clearTimeout(codeTimer);
+            codeTimer = setTimeout(() => {
+                secretCode = '';
+            }, 2000);
+            
+            // Check for secret codes
+            if (secretCode.includes('dev')) {
+                showNotification('👨‍💻 Developer mode activated!', 'success');
+                console.log('Welcome to the console, fellow developer! 🚀');
+                secretCode = '';
+            } else if (secretCode.includes('theme')) {
+                showNotification('🎨 Theme info: ' + html.getAttribute('data-theme'), 'success');
+                secretCode = '';
+            } else if (secretCode.includes('rocket')) {
+                activateRocketMode();
+                secretCode = '';
+            }
+        });
+
+        // 2. Click logo multiple times for surprise
+        let clickCount = 0;
+        const nameTitle = document.getElementById('nameTitle');
+        
+        nameTitle.addEventListener('click', () => {
+            clickCount++;
+            
+            if (clickCount === 5) {
+                showNotification('🎉 You found the secret! Keep exploring!', 'success');
+                nameTitle.style.animation = 'none';
+                setTimeout(() => {
+                    nameTitle.style.animation = 'fadeInUp 1s ease-out, float 3s ease-in-out infinite';
+                }, 10);
+                clickCount = 0;
+            }
+        });
+
+        // 3. Konami Code Easter Egg
+        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        let konamiIndex = 0;
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === konamiCode[konamiIndex]) {
+                konamiIndex++;
+                if (konamiIndex === konamiCode.length) {
+                    activateKonamiMode();
+                    konamiIndex = 0;
+                }
+            } else {
+                konamiIndex = 0;
+            }
+        });
+
+        function activateKonamiMode() {
+            showNotification('🎮 KONAMI CODE ACTIVATED! Ultimate Power Unlocked!', 'success');
+            document.body.style.animation = 'rainbow 2s linear infinite';
+            
+            setTimeout(() => {
+                document.body.style.animation = '';
+            }, 5000);
+        }
+
+        function activateRocketMode() {
+            showNotification('🚀 ROCKET MODE! Scroll speed increased!', 'warning');
+            document.documentElement.style.scrollBehavior = 'auto';
+            
+            setTimeout(() => {
+                document.documentElement.style.scrollBehavior = 'smooth';
+            }, 5000);
+        }
+
+        // ============================================
+        // PROJECT CARDS INTERACTION
+        // ============================================
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02) rotateZ(1deg)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+
+        // ============================================
+        // PROFILE IMAGE CLICK EASTER EGG
+        // ============================================
+        const profileImage = document.querySelector('.profile-image');
+        let spinCount = 0;
+        
+        profileImage.addEventListener('click', () => {
+            spinCount++;
+            profileImage.style.transform = `rotate(${spinCount * 360}deg) scale(1.2)`;
+            
+            setTimeout(() => {
+                profileImage.style.transform = '';
+            }, 1000);
+            
+            if (spinCount >= 3) {
+                showNotification('🌟 You\'re having fun! Keep clicking around!', 'success');
+                spinCount = 0;
+            }
+        });
+
+        // ============================================
+        // DYNAMIC GREETING BASED ON TIME
+        // ============================================
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            let greeting = '';
+            
+            if (hour < 12) greeting = 'Good morning';
+            else if (hour < 18) greeting = 'Good afternoon';
+            else greeting = 'Good evening';
+            
+            console.log(`${greeting}! Welcome to my portfolio 🎓`);
+        }
+        
+        updateGreeting();
+
+        // ============================================
+        // ADD CUSTOM CSS ANIMATION FOR RAINBOW
+        // ============================================
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes rainbow {
+                0% { filter: hue-rotate(0deg); }
+                100% { filter: hue-rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // ============================================
+        // WELCOME MESSAGE
+        // ============================================
+        console.log('%c🎓 Welcome to Zhong Xian Sim\'s Portfolio!', 'font-size: 20px; color: #6366f1; font-weight: bold;');
+        console.log('%c💡 Try these Easter eggs:', 'font-size: 14px; color: #8b5cf6;');
+        console.log('%c  - Type "dev" anywhere on the page', 'color: #10b981;');
+        console.log('%c  - Type "theme" to see current theme', 'color: #10b981;');
+        console.log('%c  - Type "rocket" for speed mode', 'color: #10b981;');
+        console.log('%c  - Click the name 5 times', 'color: #10b981;');
+        console.log('%c  - Click the profile image 3 times', 'color: #10b981;');
+        console.log('%c  - Try the Konami Code: ↑↑↓↓←→←→BA', 'color: #10b981;');
+        console.log('%c📧 Contact: simxian@graduate.utm.my', 'font-size: 12px; color: #ec4899;');
+
+        // ============================================
+        // PERFORMANCE OPTIMIZATION
+        // ============================================
+        
+        // Lazy load images
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                        }
+                        observer.unobserve(img);
+                    }
+                });
+            });
+
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+
+        // Debounce scroll events
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // ============================================
+        // ACCESSIBILITY ENHANCEMENTS
+        // ============================================
+        
+        // Skip to content link
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab' && !e.shiftKey && document.activeElement === document.body) {
+                const firstSection = document.querySelector('section');
+                if (firstSection) {
+                    e.preventDefault();
+                    firstSection.focus();
+                }
+            }
+        });
+
+        // ============================================
+        // INITIALIZE ON LOAD
+        // ============================================
+        window.addEventListener('load', () => {
+            // Animate stats on page load if visible
+            document.querySelectorAll('.stat-card').forEach(card => {
+                if (card.getBoundingClientRect().top < window.innerHeight) {
+                    const statNumber = card.querySelector('.stat-number');
+                    animateNumber(statNumber);
+                }
+            });
+            
+            // Show welcome notification
+            setTimeout(() => {
+                showNotification('👋 Welcome! Explore my portfolio and find hidden features!', 'success');
+            }, 1000);
+        });
     </script>
 </body>
 </html>
-
