@@ -1,1494 +1,828 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zhong Xian Sim - Academic Portfolio</title>
+    <title>Zhong Xian Sim - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Custom Keyframes */
+        @keyframes blink {
+            0%, 100% { border-color: transparent; }
+            50% { border-color: #6366f1; }
         }
-
-        :root {
-            --primary: #6366f1;
-            --secondary: #8b5cf6;
-            --accent: #ec4899;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --dark: #0f172a;
-            --darker: #020617;
-            --light: #f1f5f9;
-            --card-bg: rgba(99, 102, 241, 0.05);
-            --card-border: rgba(99, 102, 241, 0.2);
-            --text-primary: #f1f5f9;
-            --text-secondary: rgba(241, 245, 249, 0.8);
+        .animate-blink { animation: blink 1s step-end infinite; }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-
-        [data-theme="light"] {
-            --dark: #f1f5f9;
-            --darker: #ffffff;
-            --light: #0f172a;
-            --card-bg: rgba(99, 102, 241, 0.08);
-            --card-border: rgba(99, 102, 241, 0.25);
-            --text-primary: #0f172a;
-            --text-secondary: rgba(15, 23, 42, 0.8);
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--darker);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            transition: background 0.5s ease, color 0.5s ease;
-        }
-
-        /* Animated Background */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
-            transition: background 0.5s ease;
-        }
-
-        .bg-animation::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: moveGrid 20s linear infinite;
-        }
-
-        @keyframes moveGrid {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        /* Floating particles */
-        .particle {
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            opacity: 0.6;
-            animation: float 15s infinite ease-in-out;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0) scale(1); }
-            50% { transform: translateY(-100vh) translateX(50px) scale(1.5); }
-        }
-
-        /* Theme Toggle */
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1001;
-            background: var(--card-bg);
-            border: 2px solid var(--card-border);
-            border-radius: 50px;
-            padding: 12px 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
-        }
-
-        .theme-icon {
-            width: 24px;
-            height: 24px;
-            transition: all 0.3s;
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            z-index: 1000;
-            border-bottom: 1px solid var(--card-border);
-            transition: all 0.5s ease;
-        }
-
-        [data-theme="light"] nav {
-            background: rgba(241, 245, 249, 0.8);
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        nav a {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            transition: width 0.3s;
-        }
-
-        nav a:hover::after, nav a.active::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 60px;
-        }
-
-        .hero-content {
-            max-width: 1000px;
-        }
-
-        .profile-image-container {
-            margin-bottom: 2rem;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .profile-image {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            border: 5px solid var(--primary);
-            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.4);
-            object-fit: cover;
-            transition: all 0.5s;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .profile-image:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 30px 80px rgba(99, 102, 241, 0.6);
+        .animate-gradient {
+            background-size: 200% auto;
+            animation: gradient 3s linear infinite;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-10px); }
         }
+        .animate-float { animation: float 6s ease-in-out infinite; }
 
-        .hero-content h1 {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease-out 0.2s backwards;
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
-
-        .hero-content .subtitle {
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
-            color: var(--text-primary);
-            margin-bottom: 2rem;
-            animation: fadeInUp 1s ease-out 0.4s backwards;
+        .animate-spin-slow { animation: spin-slow 10s linear infinite; }
+        
+        @keyframes spin-reverse-slower {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
         }
+        .animate-spin-reverse-slower { animation: spin-reverse-slower 15s linear infinite; }
 
-        .hero-content .description {
-            max-width: 700px;
-            margin: 0 auto 2rem;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: var(--text-secondary);
-            animation: fadeInUp 1s ease-out 0.6s backwards;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            margin: 2rem 0;
-            animation: fadeInUp 1s ease-out 0.8s backwards;
-        }
-
-        .social-link {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--card-bg);
-            border: 2px solid var(--card-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            color: var(--text-primary);
-            text-decoration: none;
-        }
-
-        .social-link:hover {
-            transform: translateY(-5px) scale(1.1);
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
-        }
-
-        .social-link svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 1s ease-out 1s backwards;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-primary);
-            border: 2px solid var(--primary);
-        }
-
-        .btn-secondary:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-3px);
-        }
-
-        /* Section Styles */
-        section {
-            padding: 5rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-size: clamp(2rem, 5vw, 3rem);
-            text-align: center;
-            margin-bottom: 3rem;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* Stats Section */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
-            transition: all 0.5s;
+        /* Utilities for Scroll Reveal */
+        .reveal {
             opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
         }
-
-        .stat-card:hover::before {
-            opacity: 1;
-            animation: rotate 3s linear infinite;
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .stat-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            font-weight: bold;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-top: 0.5rem;
-        }
-
-        /* Experience Cards */
-        .experience-grid {
-            display: grid;
-            gap: 2rem;
-        }
-
-        .exp-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 2rem;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .exp-card::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 4px;
-            background: linear-gradient(180deg, var(--primary), var(--accent));
-            transform: scaleY(0);
-            transition: transform 0.3s;
-        }
-
-        .exp-card:hover::before {
-            transform: scaleY(1);
-        }
-
-        .exp-card:hover {
-            transform: translateX(10px);
-            border-color: var(--primary);
-        }
-
-        .exp-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .exp-title {
-            font-size: 1.5rem;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .exp-company {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .exp-date {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .exp-description {
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        /* Projects Grid */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 2rem;
-            transition: all 0.3s;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
-            border-color: var(--accent);
-        }
-
-        .project-title {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .project-description {
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        .project-links {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .project-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .project-link:hover {
-            color: var(--accent);
-            transform: translateX(5px);
-        }
-
-        .project-link svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        /* Skills Section */
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .skill-category {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 2rem;
-        }
-
-        .skill-category h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .skill-item {
-            margin-bottom: 1rem;
-        }
-
-        .skill-name {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .skill-bar {
-            height: 8px;
-            background: rgba(99, 102, 241, 0.2);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .skill-progress {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            border-radius: 10px;
-            transition: width 1s ease-out;
-            width: 0;
-        }
-
-        /* Contact Section */
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .contact-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .contact-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.3);
-        }
-
-        .contact-icon {
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .contact-icon svg {
-            width: 48px;
-            height: 48px;
-        }
-
-        .contact-card a {
-            color: var(--primary);
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .contact-card a:hover {
-            color: var(--accent);
-        }
-
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: var(--card-bg);
-            border: 2px solid var(--card-border);
-            border-radius: 15px;
-            padding: 1rem 1.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            z-index: 2000;
-            opacity: 0;
-            transform: translateX(400px);
-            transition: all 0.3s;
-        }
-
-        .notification.show {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .notification.success {
-            border-color: var(--success);
-        }
-
-        .notification.warning {
-            border-color: var(--warning);
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 2rem;
-            background: rgba(15, 23, 42, 0.8);
-            border-top: 1px solid var(--card-border);
-            transition: all 0.5s ease;
-        }
-
-        [data-theme="light"] footer {
-            background: rgba(241, 245, 249, 0.8);
-        }
-
-        /* Scroll Animation */
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.6s ease-out;
-        }
-
-        .scroll-reveal.active {
+        .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
 
-        @media (max-width: 768px) {
-            .theme-toggle {
-                top: 10px;
-                right: 10px;
-                padding: 10px;
-            }
+        /* Stagger delays */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
 
-            nav ul {
-                gap: 1rem;
-            }
-
-            section {
-                padding: 3rem 1rem;
-            }
-
-            .profile-image {
-                width: 150px;
-                height: 150px;
-            }
+        /* Matrix Rain Canvas for Easter Egg */
+        #matrix-canvas {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            opacity: 0.8;
+            pointer-events: none;
         }
     </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            950: '#020617',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-    <div class="bg-animation"></div>
-    
-    <!-- Floating Particles -->
-    <div id="particles"></div>
+<body class="bg-gray-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 selection:bg-indigo-500 selection:text-white overflow-x-hidden relative transition-colors duration-300">
 
-    <!-- Theme Toggle -->
-    <div class="theme-toggle" id="themeToggle">
-        <svg class="theme-icon" id="themeIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="5"/>
-            <line x1="12" y1="1" x2="12" y2="3"/>
-            <line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/>
-            <line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </svg>
+    <!-- Easter Egg: Matrix Canvas -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Dynamic Background Grid & Mouse Spotlight -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+        
+        <!-- The Spotlight (Controlled by JS) -->
+        <div id="spotlight" class="absolute inset-0 transition-opacity duration-300 hidden dark:block"></div>
     </div>
 
-    <!-- Notification -->
-    <div class="notification" id="notification"></div>
+    <!-- Progress Bar -->
+    <div id="progress-bar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 z-50 transition-all duration-100 ease-out" style="width: 0%"></div>
+
+    <!-- Scroll To Top Button -->
+    <button id="scroll-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="fixed bottom-8 right-8 bg-indigo-600 text-white p-3 rounded-full shadow-lg hover:bg-indigo-500 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+    </button>
 
     <!-- Navigation -->
-    <nav>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
+    <nav id="navbar" class="fixed top-0 w-full z-40 px-6 py-4 transition-all duration-300 border-b border-transparent">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div id="logo-text" class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-cyan-600 dark:from-indigo-400 dark:to-cyan-400 cursor-pointer hover:scale-105 transition-transform" onclick="scrollToSection('home')">
+                ZX.SIM
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#home" class="nav-link text-sm font-medium hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors relative group" data-section="home">Home</a>
+                <a href="#achievements" class="nav-link text-sm font-medium hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors relative group" data-section="achievements">Achievements</a>
+                <a href="#academic-journey" class="nav-link text-sm font-medium hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors relative group" data-section="academic-journey">Academics</a>
+                <a href="#experience" class="nav-link text-sm font-medium hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors relative group" data-section="experience">Journey</a>
+                <a href="#projects" class="nav-link text-sm font-medium hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors relative group" data-section="projects">Projects</a>
+                <a href="#skills" class="nav-link text-sm font-medium hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors relative group" data-section="skills">Skills</a>
+                <a href="#updates" class="nav-link text-sm font-medium hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors relative group" data-section="updates">News</a>
+                <a href="#contact" class="nav-link text-sm font-medium hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors relative group" data-section="contact">Contact</a>
+                
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-slate-800 text-slate-800 dark:text-yellow-400 hover:scale-110 transition-transform">
+                    <!-- Sun Icon -->
+                    <svg id="sun-icon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <!-- Moon Icon -->
+                    <svg id="moon-icon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-slate-800 dark:text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-gray-200 dark:border-white/10 py-4 shadow-2xl flex flex-col items-center space-y-4">
+            <a href="#home" class="text-lg font-medium hover:text-indigo-500" onclick="toggleMobileMenu()">Home</a>
+            <a href="#achievements" class="text-lg font-medium hover:text-indigo-500" onclick="toggleMobileMenu()">Achievements</a>
+            <a href="#academic-journey" class="text-lg font-medium hover:text-indigo-500" onclick="toggleMobileMenu()">Academics</a>
+            <a href="#experience" class="text-lg font-medium hover:text-indigo-500" onclick="toggleMobileMenu()">Journey</a>
+            <a href="#projects" class="text-lg font-medium hover:text-indigo-500" onclick="toggleMobileMenu()">Projects</a>
+            <a href="#skills" class="text-lg font-medium hover:text-indigo-500" onclick="toggleMobileMenu()">Skills</a>
+            <a href="#updates" class="text-lg font-medium hover:text-indigo-500" onclick="toggleMobileMenu()">Updates</a>
+            <a href="#contact" class="text-lg font-medium hover:text-indigo-500" onclick="toggleMobileMenu()">Contact</a>
+            <button id="theme-toggle-mobile" class="mt-4 px-4 py-2 rounded-full bg-gray-200 dark:bg-slate-800 font-medium">Toggle Theme</button>
+        </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <div class="profile-image-container">
-                <!-- CUSTOMIZE: Replace with your image URL -->
-                <img src="https://media.licdn.com/dms/image/v2/D5603AQF7_z3GZIqHUg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1731061514308?e=1766016000&v=beta&t=4nsTY95NTK4UcQ-bMRTQ2uwwM22tlLYRQfhCSlQ9Z3c" alt="Zhong Xian Sim" class="profile-image">
-            </div>
-            <h1 id="nameTitle">Zhong Xian Sim</h1>
-            <div class="subtitle">Electrical-Mechatronics Engineer</div>
-            <div class="description">
-                Passionate about robotics, AI, and innovative engineering solutions. 
-                Dean's List holder for 8 semesters with expertise in mechatronics systems, 
-                machine learning, and embedded systems design.
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Decorative blobs -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[100px] animate-pulse"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-500/20 rounded-full blur-[100px] animate-pulse" style="animation-delay: 1s;"></div>
+
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10">
+            <div class="order-2 md:order-1 reveal">
+                <div class="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-indigo-600 dark:text-indigo-400 uppercase bg-indigo-500/10 rounded-full border border-indigo-500/20">
+                    Welcome to my portfolio
+                </div>
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-6 leading-tight">
+                    Hi, I'm <br />
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 animate-gradient">
+                        Zhong Xian Sim
+                    </span>
+                </h1>
+                <div class="h-8 mb-6">
+                    <span id="typewriter" class="text-xl md:text-2xl text-slate-600 dark:text-slate-400 font-mono border-r-2 border-indigo-500 pr-1 animate-blink"></span>
+                </div>
+                <p class="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed max-w-lg">
+                    Passionate about robotics, AI, and innovative engineering solutions. 
+                    Translating complex theory into functional reality through code and hardware.
+                </p>
+                
+                <div class="flex flex-wrap gap-4">
+                    <a href="#projects" class="px-8 py-3 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all transform hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/25 flex items-center gap-2">
+                        View Work
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                    <a href="#contact" class="px-8 py-3 rounded-full border border-slate-300 dark:border-slate-600 hover:border-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-400 text-slate-700 dark:text-slate-300 font-semibold transition-all hover:bg-indigo-500/10">
+                        Contact Me
+                    </a>
+                </div>
+                
+                <!-- Social Icons -->
+                <div class="flex gap-6 mt-10">
+                    <a href="https://github.com/simzx02" target="_blank" class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors transform hover:-translate-y-1">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/simzhongxian/" target="_blank" class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors transform hover:-translate-y-1">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                    <a href="mailto:simxian@graduate.utm.my" class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors transform hover:-translate-y-1">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </a>
+                </div>
             </div>
 
-            <!-- Social Links with SVG Icons -->
-            <div class="social-links">
-                <!-- CUSTOMIZE: Update your GitHub username -->
-                <a href="https://github.com/simzx02" target="_blank" class="social-link" title="GitHub">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                </a>
-                <!-- CUSTOMIZE: Update your LinkedIn profile -->
-                <a href="https://www.linkedin.com/in/simzhongxian/" target="_blank" class="social-link" title="LinkedIn">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                    </svg>
-                </a>
-                <!-- CUSTOMIZE: Add your email -->
-                <a href="mailto:simxian@graduate.utm.my" class="social-link" title="Email">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                        <polyline points="22,6 12,13 2,6"/>
-                    </svg>
-                </a>
-                <!-- CUSTOMIZE: Add ResearchGate or other academic profiles -->
-                <a href="#" class="social-link" title="Research">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                    </svg>
-                </a>
-            </div>
-
-            <div class="cta-buttons">
-                <a href="#projects" class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="7" height="7"/>
-                        <rect x="14" y="3" width="7" height="7"/>
-                        <rect x="14" y="14" width="7" height="7"/>
-                        <rect x="3" y="14" width="7" height="7"/>
-                    </svg>
-                    View My Work
-                </a>
-                <a href="#contact" class="btn btn-secondary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                    </svg>
-                    Get In Touch
-                </a>
+            <!-- Profile Image with Glow Ring (Easter Egg Trigger) -->
+            <div class="order-1 md:order-2 flex justify-center relative reveal delay-200">
+                <div class="relative w-64 h-64 md:w-80 md:h-80 group cursor-pointer" id="profile-container">
+                    <!-- Rotating rings -->
+                    <div class="absolute inset-0 rounded-full border-2 border-dashed border-indigo-500/30 animate-spin-slow"></div>
+                    <div class="absolute -inset-4 rounded-full border border-gray-300 dark:border-white/10 animate-spin-reverse-slower"></div>
+                    
+                    <!-- Image Container -->
+                    <div class="absolute inset-2 rounded-full overflow-hidden border-4 border-white dark:border-slate-800 shadow-2xl shadow-indigo-500/20 z-10">
+                        <img src="https://media.licdn.com/dms/image/v2/D5603AQF7_z3GZIqHUg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1731061514308?e=1766016000&v=beta&t=4nsTY95NTK4UcQ-bMRTQ2uwwM22tlLYRQfhCSlQ9Z3c" 
+                             alt="Zhong Xian Sim" 
+                             id="profile-img"
+                             class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section id="about">
-        <h2 class="section-title scroll-reveal">Academic Excellence</h2>
-        <div class="stats-grid">
-            <div class="stat-card scroll-reveal">
-                <div class="stat-number" data-target="3.95">0</div>
-                <div class="stat-label">CGPA / 4.0</div>
+    <!-- Achievements Section (Renamed from About) -->
+    <section id="achievements" class="py-24 relative bg-white dark:bg-transparent">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-12 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Key <span class="text-indigo-600 dark:text-indigo-400">Achievements</span></h2>
+                <div class="w-20 h-1 bg-indigo-500 mx-auto rounded-full"></div>
             </div>
-            <div class="stat-card scroll-reveal">
-                <div class="stat-number" data-target="8">0</div>
-                <div class="stat-label">Dean's List Semesters</div>
-            </div>
-            <div class="stat-card scroll-reveal">
-                <div class="stat-number" data-target="7.0">0</div>
-                <div class="stat-label">IELTS Band</div>
-            </div>
-            <div class="stat-card scroll-reveal">
-                <div class="stat-number" data-target="5">0</div>
-                <div class="stat-label">Major Projects</div>
+
+            <div class="space-y-4">
+                <!-- Achievement Card 1 -->
+                <div class="group flex items-center p-6 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-200 dark:border-white/5 hover:border-indigo-500/50 transition-all duration-300 hover:shadow-lg hover:-translate-x-2 reveal delay-100">
+                    <div class="w-16 h-16 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-3xl mr-6 flex-shrink-0">
+                        🎓
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-white">3.95/4.0 CGPA</h3>
+                        <p class="text-slate-600 dark:text-slate-400 mt-1">Outstanding academic performance consistently across all semesters.</p>
+                    </div>
+                </div>
+
+                <!-- Achievement Card 2 -->
+                <div class="group flex items-center p-6 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-200 dark:border-white/5 hover:border-indigo-500/50 transition-all duration-300 hover:shadow-lg hover:-translate-x-2 reveal delay-200">
+                    <div class="w-16 h-16 rounded-xl bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center text-3xl mr-6 flex-shrink-0">
+                        🏆
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-white">Dean's List (x8)</h3>
+                        <p class="text-slate-600 dark:text-slate-400 mt-1">Awarded Dean’s List recognition for 8 consecutive semesters for academic excellence.</p>
+                    </div>
+                </div>
+
+                <!-- Achievement Card 3 -->
+                <div class="group flex items-center p-6 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-200 dark:border-white/5 hover:border-indigo-500/50 transition-all duration-300 hover:shadow-lg hover:-translate-x-2 reveal delay-300">
+                    <div class="w-16 h-16 rounded-xl bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-3xl mr-6 flex-shrink-0">
+                        🌍
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-white">IELTS Band 7.0</h3>
+                        <p class="text-slate-600 dark:text-slate-400 mt-1">Proficient English communication skills suitable for global research environments.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Experience Section -->
-    <section id="experience">
-        <h2 class="section-title scroll-reveal">Experience</h2>
-        <div class="experience-grid">
-            <div class="exp-card scroll-reveal">
-                <div class="exp-header">
-                    <div>
-                        <div class="exp-title">Robotics Research Intern</div>
-                        <div class="exp-company">A*STAR, Singapore</div>
-                    </div>
-                    <div class="exp-date">Sep 2025 - Nov 2025 (Expected)</div>
-                </div>
-                <div class="exp-description">
-                    Working on advanced robotics projects with ROS2, Robotic Arm, Dexterous Hand and Tactile Sensors. 
-                    Recipient of A*STAR Singapore International Pre-Graduate Award (SIPGA).
-                </div>
+    <!-- NEW SECTION: Academic Journey -->
+    <section id="academic-journey" class="py-24 relative bg-gray-50 dark:bg-slate-900/30">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Academic <span class="text-indigo-600 dark:text-indigo-400">Journey</span></h2>
+                <p class="text-slate-600 dark:text-slate-400">My educational background and milestones</p>
             </div>
 
-            <div class="exp-card scroll-reveal">
-                <div class="exp-header">
-                    <div>
-                        <div class="exp-title">Design Verification Intern</div>
-                        <div class="exp-company">Advanced Micro Devices (AMD)</div>
+            <div class="relative space-y-12">
+                 <!-- Vertical Line -->
+                 <div class="absolute left-4 md:left-8 top-0 bottom-0 w-0.5 bg-indigo-200 dark:bg-indigo-900/50"></div>
+
+                 <!-- Edu Item 1 -->
+                 <div class="relative flex items-start pl-12 md:pl-20 group reveal">
+                    <!-- Dot -->
+                    <div class="absolute left-2.5 md:left-[27px] top-1 w-4 h-4 rounded-full bg-white dark:bg-slate-900 border-4 border-indigo-500 z-10 group-hover:scale-125 transition-transform"></div>
+                    
+                    <div class="w-full">
+                        <span class="text-sm font-bold text-indigo-600 dark:text-indigo-400 mb-1 block">2021 - Present</span>
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-white">Bachelor of Mechatronics Engineering</h3>
+                        <p class="text-slate-600 dark:text-slate-400 font-medium">Universiti Teknologi Malaysia (UTM)</p>
+                        <ul class="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-400 list-disc list-inside">
+                            <li>Specializing in Robotics and Embedded Systems.</li>
+                            <li>Active member of the Robotics Club.</li>
+                            <li>Capstone Project: Contact Lens Packaging Detector.</li>
+                        </ul>
                     </div>
-                    <div class="exp-date">Jul 2024 - Oct 2024</div>
-                </div>
-                <div class="exp-description">
-                    Executed tests and scripting on UNIX-based systems. Developed data scraping tools from HTMLs to Excel 
-                    and optimized Python and C shell scripts for improved efficiency.
-                </div>
+                 </div>
+
+                 <!-- Edu Item 2 -->
+                 <div class="relative flex items-start pl-12 md:pl-20 group reveal delay-100">
+                    <!-- Dot -->
+                    <div class="absolute left-2.5 md:left-[27px] top-1 w-4 h-4 rounded-full bg-white dark:bg-slate-900 border-4 border-indigo-500 z-10 group-hover:scale-125 transition-transform"></div>
+                    
+                    <div class="w-full">
+                        <span class="text-sm font-bold text-indigo-600 dark:text-indigo-400 mb-1 block">2020 - 2021</span>
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-white">Foundation in Engineering</h3>
+                        <p class="text-slate-600 dark:text-slate-400 font-medium">Universiti Teknologi Malaysia (UTM)</p>
+                        <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Graduated with High Distinction. Built strong fundamentals in Mathematics and Physics.</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Journey Section (Preserved Layout) -->
+    <section id="experience" class="py-24 relative bg-white dark:bg-transparent">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Professional <span class="text-indigo-600 dark:text-indigo-400">Journey</span></h2>
+                <p class="text-slate-600 dark:text-slate-400">My path in engineering and innovation</p>
             </div>
 
-            <div class="exp-card scroll-reveal">
-                <div class="exp-header">
-                    <div>
-                        <div class="exp-title">Technical Trainee Intern</div>
-                        <div class="exp-company">CADVision System</div>
+            <div class="relative space-y-12">
+                <!-- Vertical Line -->
+                <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-indigo-500 via-purple-500 to-slate-200 dark:to-slate-800 opacity-30"></div>
+
+                <!-- Experience Item 1 -->
+                <div class="relative flex flex-col md:flex-row gap-8 items-start group reveal">
+                    <div class="absolute left-4 md:left-1/2 w-4 h-4 rounded-full bg-white dark:bg-slate-900 border-2 border-indigo-500 -translate-x-1.5 md:-translate-x-2 mt-1.5 z-10 group-hover:scale-150 group-hover:bg-indigo-500 transition-all duration-300 shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
+                    
+                    <div class="pl-12 md:pl-0 md:w-1/2 md:text-right md:pr-12 md:order-1">
+                        <span class="inline-block px-3 py-1 rounded-full bg-indigo-50 dark:bg-slate-800 border border-indigo-100 dark:border-slate-700 text-indigo-600 dark:text-indigo-300 text-xs font-mono mb-2 md:mb-0">
+                            Sep 2025 - Nov 2025
+                        </span>
                     </div>
-                    <div class="exp-date">Aug 2023 - Sep 2023</div>
+
+                    <div class="pl-12 md:pl-0 md:w-1/2 md:pl-12 md:order-2">
+                        <div class="p-6 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-200 dark:border-white/5 hover:border-indigo-500/30 transition-all duration-300 hover:shadow-xl hover:bg-white dark:hover:bg-slate-800 hover:-translate-y-1 relative overflow-hidden">
+                            <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-1">Robotics Research Intern</h3>
+                            <div class="text-purple-600 dark:text-purple-400 font-medium mb-3 flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                A*STAR, Singapore
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Working on advanced robotics with ROS2, Dexterous Hand manipulation, and Tactile Sensors. SIPGA Award Recipient.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="exp-description">
-                    Assisted Application Engineers with SolidWorks training and participated in business processes 
-                    for customer inquiries.
+
+                <!-- Experience Item 2 -->
+                <div class="relative flex flex-col md:flex-row gap-8 items-start group reveal">
+                    <div class="absolute left-4 md:left-1/2 w-4 h-4 rounded-full bg-white dark:bg-slate-900 border-2 border-indigo-500 -translate-x-1.5 md:-translate-x-2 mt-1.5 z-10 group-hover:scale-150 group-hover:bg-indigo-500 transition-all duration-300 shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
+                    
+                    <div class="pl-12 md:pl-0 md:w-1/2 md:text-right md:pr-12 md:order-2">
+                        <span class="inline-block px-3 py-1 rounded-full bg-indigo-50 dark:bg-slate-800 border border-indigo-100 dark:border-slate-700 text-indigo-600 dark:text-indigo-300 text-xs font-mono mb-2 md:mb-0">
+                            Jul 2024 - Oct 2024
+                        </span>
+                    </div>
+
+                    <div class="pl-12 md:pl-0 md:w-1/2 md:pl-12 md:order-1">
+                        <div class="p-6 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-200 dark:border-white/5 hover:border-indigo-500/30 transition-all duration-300 hover:shadow-xl hover:bg-white dark:hover:bg-slate-800 hover:-translate-y-1 relative overflow-hidden">
+                            <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-1">Design Verification Intern</h3>
+                            <div class="text-purple-600 dark:text-purple-400 font-medium mb-3 flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                Advanced Micro Devices (AMD)
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Executed UNIX-based testing, developed data scraping tools, and optimized Python/C shell scripts for efficiency.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experience Item 3 -->
+                <div class="relative flex flex-col md:flex-row gap-8 items-start group reveal">
+                    <div class="absolute left-4 md:left-1/2 w-4 h-4 rounded-full bg-white dark:bg-slate-900 border-2 border-indigo-500 -translate-x-1.5 md:-translate-x-2 mt-1.5 z-10 group-hover:scale-150 group-hover:bg-indigo-500 transition-all duration-300 shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
+                    
+                    <div class="pl-12 md:pl-0 md:w-1/2 md:text-right md:pr-12 md:order-1">
+                        <span class="inline-block px-3 py-1 rounded-full bg-indigo-50 dark:bg-slate-800 border border-indigo-100 dark:border-slate-700 text-indigo-600 dark:text-indigo-300 text-xs font-mono mb-2 md:mb-0">
+                            Aug 2023 - Sep 2023
+                        </span>
+                    </div>
+
+                    <div class="pl-12 md:pl-0 md:w-1/2 md:pl-12 md:order-2">
+                        <div class="p-6 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-200 dark:border-white/5 hover:border-indigo-500/30 transition-all duration-300 hover:shadow-xl hover:bg-white dark:hover:bg-slate-800 hover:-translate-y-1 relative overflow-hidden">
+                            <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-1">Technical Trainee Intern</h3>
+                            <div class="text-purple-600 dark:text-purple-400 font-medium mb-3 flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                CADVision System
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Assisted in SolidWorks training and supported application engineers in customer inquiries.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Projects Section -->
-    <section id="projects">
-        <h2 class="section-title scroll-reveal">Featured Projects</h2>
-        <div class="projects-grid">
-            <div class="project-card scroll-reveal">
-                <div class="project-title">CHIPS: Cardiovascular Health Insight System</div>
-                <div class="project-description">
-                    AI-powered cardiovascular disease prediction system integrating IoT sensors with neural networks. 
-                    Uses MAX30102 pulse oximeter and blood pressure monitoring for real-time health insights.
+    <section id="projects" class="py-24 relative bg-gray-50 dark:bg-slate-900/30">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 border-b border-gray-200 dark:border-white/10 pb-6 reveal">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">Featured <span class="text-indigo-600 dark:text-indigo-400">Projects</span></h2>
+                    <p class="text-slate-600 dark:text-slate-400">Innovation through code and hardware</p>
                 </div>
-                <div class="project-links">
-                    <!-- CUSTOMIZE: Update your GitHub repo URLs -->
-                    <a href="https://github.com/simzx02/cardio" target="_blank" class="project-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-                        </svg>
-                        GitHub
-                    </a>
-                    <a href="#" class="project-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                            <polyline points="15 3 21 3 21 9"/>
-                            <line x1="10" y1="14" x2="21" y2="3"/>
-                        </svg>
-                        Demo
-                    </a>
-                </div>
+                <a href="https://github.com/simzx02" target="_blank" class="hidden md:flex items-center gap-2 text-indigo-600 dark:text-indigo-400 hover:text-slate-900 dark:hover:text-white transition-colors mt-4 md:mt-0">
+                    View all on GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </a>
             </div>
 
-            <div class="project-card scroll-reveal">
-                <div class="project-title">KongsiPark: Smart Parking System</div>
-                <div class="project-description">
-                    Startup project developing an intelligent parking management solution. 
-                    Awarded RM2k at Student Innovator Challenge and RM5k seed grant from The Next Big Thing Competition.
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="group relative rounded-2xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-white/5 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-indigo-500/20 hover:-translate-y-2 reveal">
+                    <div class="h-48 bg-gradient-to-br from-indigo-100 to-white dark:from-slate-800 dark:to-slate-900 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+                        <div class="absolute top-4 left-4 p-2 bg-white/50 dark:bg-black/50 backdrop-blur-md rounded-lg border border-black/5 dark:border-white/10">
+                            <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                        </div>
+                    </div>
+                    <div class="p-6 relative z-10">
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">CHIPS: Cardio Health System</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-3">AI-powered disease prediction integrating IoT sensors (MAX30102) with neural networks for real-time monitoring.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="px-2 py-1 text-xs rounded bg-indigo-50 dark:bg-slate-800 text-indigo-700 dark:text-slate-300 border border-indigo-100 dark:border-slate-700">Python</span>
+                            <span class="px-2 py-1 text-xs rounded bg-indigo-50 dark:bg-slate-800 text-indigo-700 dark:text-slate-300 border border-indigo-100 dark:border-slate-700">IoT</span>
+                            <span class="px-2 py-1 text-xs rounded bg-indigo-50 dark:bg-slate-800 text-indigo-700 dark:text-slate-300 border border-indigo-100 dark:border-slate-700">AI/ML</span>
+                        </div>
+                        <div class="flex items-center gap-4 pt-4 border-t border-gray-100 dark:border-white/5">
+                            <a href="https://github.com/simzx02/cardio" target="_blank" class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> Code
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="project-links">
-                    <a href="#" class="project-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <line x1="12" y1="16" x2="12" y2="12"/>
-                            <line x1="12" y1="8" x2="12.01" y2="8"/>
-                        </svg>
-                        Learn More
-                    </a>
-                </div>
-            </div>
 
-            <div class="project-card scroll-reveal">
-                <div class="project-title">Contact Lens Packaging Detector</div>
-                <div class="project-description">
-                    Smart manufacturing system using AI-trained computer vision to detect defects in contact lens packaging. 
-                    Integrates pneumatic systems to reduce manufacturing defects.
+                <!-- Project 2 -->
+                <div class="group relative rounded-2xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-white/5 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-indigo-500/20 hover:-translate-y-2 reveal delay-100">
+                    <div class="h-48 bg-gradient-to-br from-indigo-100 to-white dark:from-slate-800 dark:to-slate-900 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+                        <div class="absolute top-4 left-4 p-2 bg-white/50 dark:bg-black/50 backdrop-blur-md rounded-lg border border-black/5 dark:border-white/10">
+                            <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                        </div>
+                    </div>
+                    <div class="p-6 relative z-10">
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">KongsiPark Smart Parking</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-3">Intelligent parking management solution. Awarded RM5k seed grant and RM2k at Student Innovator Challenge.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="px-2 py-1 text-xs rounded bg-indigo-50 dark:bg-slate-800 text-indigo-700 dark:text-slate-300 border border-indigo-100 dark:border-slate-700">Startup</span>
+                            <span class="px-2 py-1 text-xs rounded bg-indigo-50 dark:bg-slate-800 text-indigo-700 dark:text-slate-300 border border-indigo-100 dark:border-slate-700">Smart City</span>
+                        </div>
+                        <div class="flex items-center gap-4 pt-4 border-t border-gray-100 dark:border-white/5">
+                            <a href="#" class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg> Demo
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="project-links">
-                    <a href="https://github.com/simzx02/Capstone-Contact-Lens-Packaging-Detector-Optimizer" target="_blank" class="project-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-                        </svg>
-                        GitHub
-                    </a>
-                </div>
-            </div>
 
-            <div class="project-card scroll-reveal">
-                <div class="project-title">Radiation Detection Robot</div>
-                <div class="project-description">
-                    Autonomous robot designed to navigate grids, detect high radiation materials, and display data 
-                    using 7-segment displays. Complete with CAD design and embedded C programming.
-                </div>
-                <div class="project-links">
-                    <a href="#" class="project-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <line x1="12" y1="16" x2="12" y2="12"/>
-                            <line x1="12" y1="8" x2="12.01" y2="8"/>
-                        </svg>
-                        Details
-                    </a>
-                </div>
-            </div>
-
-            <div class="project-card scroll-reveal">
-                <div class="project-title">Water Level PID Controller</div>
-                <div class="project-description">
-                    Arduino-based PID feedback control system for water level management. 
-                    Practical implementation of control theory in mechatronic systems.
-                </div>
-                <div class="project-links">
-                    <a href="#" class="project-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <line x1="12" y1="16" x2="12" y2="12"/>
-                            <line x1="12" y1="8" x2="12.01" y2="8"/>
-                        </svg>
-                        Details
-                    </a>
+                <!-- Project 3 -->
+                <div class="group relative rounded-2xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-white/5 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-indigo-500/20 hover:-translate-y-2 reveal delay-200">
+                     <div class="h-48 bg-gradient-to-br from-indigo-100 to-white dark:from-slate-800 dark:to-slate-900 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+                        <div class="absolute top-4 left-4 p-2 bg-white/50 dark:bg-black/50 backdrop-blur-md rounded-lg border border-black/5 dark:border-white/10">
+                            <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                        </div>
+                    </div>
+                    <div class="p-6 relative z-10">
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Lens Packaging Detector</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-3">Smart manufacturing system using computer vision to detect defects in contact lens packaging with pneumatic sorting.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="px-2 py-1 text-xs rounded bg-indigo-50 dark:bg-slate-800 text-indigo-700 dark:text-slate-300 border border-indigo-100 dark:border-slate-700">OpenCV</span>
+                            <span class="px-2 py-1 text-xs rounded bg-indigo-50 dark:bg-slate-800 text-indigo-700 dark:text-slate-300 border border-indigo-100 dark:border-slate-700">Python</span>
+                        </div>
+                        <div class="flex items-center gap-4 pt-4 border-t border-gray-100 dark:border-white/5">
+                            <a href="https://github.com/simzx02/Capstone-Contact-Lens-Packaging-Detector-Optimizer" target="_blank" class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> Code
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Skills Section -->
-    <section id="skills">
-        <h2 class="section-title scroll-reveal">Technical Skills</h2>
-        <div class="skills-container">
-            <div class="skill-category scroll-reveal">
-                <h3>Programming</h3>
-                <div class="skill-item">
-                    <div class="skill-name"><span>Python</span><span>Advanced</span></div>
-                    <div class="skill-bar"><div class="skill-progress" data-width="90"></div></div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-name"><span>C Programming</span><span>Advanced</span></div>
-                    <div class="skill-bar"><div class="skill-progress" data-width="85"></div></div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-name"><span>Verilog</span><span>Intermediate</span></div>
-                    <div class="skill-bar"><div class="skill-progress" data-width="70"></div></div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-name"><span>C Shell</span><span>Beginner</span></div>
-                    <div class="skill-bar"><div class="skill-progress" data-width="50"></div></div>
-                </div>
+    <!-- Skills Section (Simplified) -->
+    <section id="skills" class="py-24 relative bg-white dark:bg-transparent">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Technical <span class="text-indigo-600 dark:text-indigo-400">Arsenal</span></h2>
+                <p class="text-slate-600 dark:text-slate-400">Tools and technologies I work with</p>
             </div>
 
-            <div class="skill-category scroll-reveal">
-                <h3>Robotics & AI</h3>
-                <div class="skill-item">
-                    <div class="skill-name"><span>ROS1/2</span><span>Intermediate</span></div>
-                    <div class="skill-bar"><div class="skill-progress" data-width="70"></div></div>
+            <div class="flex flex-wrap justify-center gap-4 reveal">
+                <!-- Programming -->
+                <div class="px-6 py-4 rounded-xl bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-white/5 flex flex-col items-center hover:scale-110 transition-transform duration-300 shadow-sm">
+                    <span class="text-2xl mb-2">🐍</span>
+                    <span class="font-bold text-slate-800 dark:text-white">Python</span>
                 </div>
-                <div class="skill-item">
-                    <div class="skill-name"><span>Unity</span><span>Intermediate</span></div>
-                    <div class="skill-bar"><div class="skill-progress" data-width="65"></div></div>
+                <div class="px-6 py-4 rounded-xl bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-white/5 flex flex-col items-center hover:scale-110 transition-transform duration-300 shadow-sm">
+                    <span class="text-2xl mb-2">⚙️</span>
+                    <span class="font-bold text-slate-800 dark:text-white">C/C++</span>
                 </div>
-                <div class="skill-item">
-                    <div class="skill-name"><span>MATLAB & Simulink</span><span>Intermediate</span></div>
-                    <div class="skill-bar"><div class="skill-progress" data-width="75"></div></div>
+                <div class="px-6 py-4 rounded-xl bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-white/5 flex flex-col items-center hover:scale-110 transition-transform duration-300 shadow-sm">
+                    <span class="text-2xl mb-2">🤖</span>
+                    <span class="font-bold text-slate-800 dark:text-white">ROS2</span>
+                </div>
+                <div class="px-6 py-4 rounded-xl bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-white/5 flex flex-col items-center hover:scale-110 transition-transform duration-300 shadow-sm">
+                    <span class="text-2xl mb-2">🔋</span>
+                    <span class="font-bold text-slate-800 dark:text-white">Arduino</span>
+                </div>
+                
+                <!-- Tools -->
+                <div class="px-6 py-4 rounded-xl bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-white/5 flex flex-col items-center hover:scale-110 transition-transform duration-300 shadow-sm">
+                    <span class="text-2xl mb-2">🐧</span>
+                    <span class="font-bold text-slate-800 dark:text-white">Linux</span>
+                </div>
+                <div class="px-6 py-4 rounded-xl bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-white/5 flex flex-col items-center hover:scale-110 transition-transform duration-300 shadow-sm">
+                    <span class="text-2xl mb-2">🌲</span>
+                    <span class="font-bold text-slate-800 dark:text-white">Git</span>
+                </div>
+                <div class="px-6 py-4 rounded-xl bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-white/5 flex flex-col items-center hover:scale-110 transition-transform duration-300 shadow-sm">
+                    <span class="text-2xl mb-2">📐</span>
+                    <span class="font-bold text-slate-800 dark:text-white">SolidWorks</span>
+                </div>
+                <div class="px-6 py-4 rounded-xl bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-white/5 flex flex-col items-center hover:scale-110 transition-transform duration-300 shadow-sm">
+                    <span class="text-2xl mb-2">📊</span>
+                    <span class="font-bold text-slate-800 dark:text-white">MATLAB</span>
+                </div>
+                <div class="px-6 py-4 rounded-xl bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-white/5 flex flex-col items-center hover:scale-110 transition-transform duration-300 shadow-sm">
+                    <span class="text-2xl mb-2">🧠</span>
+                    <span class="font-bold text-slate-800 dark:text-white">OpenCV</span>
+                </div>
+                <div class="px-6 py-4 rounded-xl bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-white/5 flex flex-col items-center hover:scale-110 transition-transform duration-300 shadow-sm">
+                    <span class="text-2xl mb-2">🌐</span>
+                    <span class="font-bold text-slate-800 dark:text-white">IoT</span>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div class="skill-category scroll-reveal">
-                <h3>Tools & Platforms</h3>
-                <div class="skill-item">
-                    <div class="skill-name"><span>Git & GitHub</span><span>Advanced</span></div>
-                    <div class="skill-bar"><div class="skill-progress" data-width="85"></div></div>
+    <!-- NEW SECTION: Updates/News -->
+    <section id="updates" class="py-24 relative bg-gray-50 dark:bg-slate-900/30">
+        <div class="max-w-5xl mx-auto px-6">
+             <div class="flex items-center gap-4 mb-8 reveal">
+                <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Latest <span class="text-indigo-600 dark:text-indigo-400">Updates</span></h2>
+                <div class="h-px flex-grow bg-gray-300 dark:bg-white/10"></div>
+                <span class="text-xs font-mono text-indigo-500 animate-pulse">LIVE FEED</span>
+             </div>
+
+             <div class="grid md:grid-cols-2 gap-6 reveal delay-100">
+                <!-- Update 1 -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-800 border-l-4 border-indigo-500 shadow-sm">
+                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-2 font-mono">Oct 25, 2025</div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2">Completed SIPGA Internship</h3>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm">Successfully wrapped up my research attachment at A*STAR Singapore. Published internal findings on tactile sensors.</p>
                 </div>
-                <div class="skill-item">
-                    <div class="skill-name"><span>Linux CLI</span><span>Advanced</span></div>
-                    <div class="skill-bar"><div class="skill-progress" data-width="80"></div></div>
+                
+                <!-- Update 2 -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-800 border-l-4 border-purple-500 shadow-sm">
+                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-2 font-mono">Sep 10, 2025</div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2">Hackathon Winner 🏆</h3>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm">Won 1st Runner Up at the National Robotics Hackathon with our autonomous drone project.</p>
                 </div>
-                <div class="skill-item">
-                    <div class="skill-name"><span>SolidWorks</span><span>Intermediate</span></div>
-                    <div class="skill-bar"><div class="skill-progress" data-width="75"></div></div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-name"><span>Arduino IDE</span><span>Intermediate</span></div>
-                    <div class="skill-bar"><div class="skill-progress" data-width="80"></div></div>
-                </div>
-            </div>
+             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact">
-        <h2 class="section-title scroll-reveal">Get In Touch</h2>
-        <div class="contact-grid">
-            <div class="contact-card scroll-reveal">
-                <div class="contact-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                        <polyline points="22,6 12,13 2,6"/>
-                    </svg>
-                </div>
-                <h3>Email</h3>
-                <!-- CUSTOMIZE: Update your email -->
-                <a href="mailto:simxian@graduate.utm.my">simxian@graduate.utm.my</a><br>
-                <a href="mailto:zex.sim02@gmail.com">zex.sim02@gmail.com</a>
+    <section id="contact" class="py-24 relative">
+        <div class="max-w-4xl mx-auto px-6 text-center reveal">
+            <h2 class="text-3xl md:text-5xl font-bold mb-8 text-slate-900 dark:text-white">Let's Build Something <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-cyan-600 dark:from-indigo-400 dark:to-cyan-400">Amazing</span></h2>
+            <p class="text-xl text-slate-600 dark:text-slate-400 mb-12 max-w-2xl mx-auto">
+                I'm currently looking for new opportunities in robotics and software engineering. 
+                Whether you have a question or just want to say hi, my inbox is open!
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <a href="mailto:simxian@graduate.utm.my" class="p-8 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/5 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-all group shadow-sm">
+                    <div class="w-12 h-12 mx-auto bg-white dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-md">
+                        <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-slate-900 dark:text-white font-semibold">Email Me</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">simxian@graduate.utm.my</p>
+                </a>
+                <a href="https://www.linkedin.com/in/simzhongxian/" target="_blank" class="p-8 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/5 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-all group shadow-sm">
+                    <div class="w-12 h-12 mx-auto bg-white dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-md">
+                        <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </div>
+                    <h3 class="text-slate-900 dark:text-white font-semibold">Connect</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">LinkedIn Profile</p>
+                </a>
+                <a href="tel:+60146002369" class="p-8 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/5 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-all group shadow-sm">
+                    <div class="w-12 h-12 mx-auto bg-white dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-md">
+                        <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                    </div>
+                    <h3 class="text-slate-900 dark:text-white font-semibold">Call Me</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">+6014-6002369</p>
+                </a>
             </div>
-            <div class="contact-card scroll-reveal">
-                <div class="contact-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                        <rect x="2" y="9" width="4" height="12"/>
-                        <circle cx="4" cy="4" r="2"/>
-                    </svg>
+
+            <div class="flex flex-col items-center justify-center gap-2 mt-12 border-t border-gray-200 dark:border-white/10 pt-8">
+                <p class="text-slate-500 dark:text-slate-500 text-sm">
+                    &copy; 2025 Zhong Xian Sim. Built with Passion.
+                </p>
+                <div class="flex items-center gap-2 text-xs font-mono text-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 px-3 py-1 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span id="visitor-count">Live Visitors: 124</span>
                 </div>
-                <h3>LinkedIn</h3>
-                <!-- CUSTOMIZE: Update your LinkedIn -->
-                <a href="https://www.linkedin.com/in/simzhongxian/" target="_blank">linkedin.com/in/simzhongxian</a>
-            </div>
-            <div class="contact-card scroll-reveal">
-                <div class="contact-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                    </svg>
-                </div>
-                <h3>Phone</h3>
-                <!-- CUSTOMIZE: Update your phone -->
-                <a href="tel:+60146002369">+6014-6002369</a>
-            </div>
-            <div class="contact-card scroll-reveal">
-                <div class="contact-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                        <circle cx="12" cy="10" r="3"/>
-                    </svg>
-                </div>
-                <h3>Location</h3>
-                <p>Johor, Malaysia</p>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 Zhong Xian Sim. All rights reserved.</p>
-        <p>Built with passion for engineering excellence ⚡</p>
-    </footer>
-
+    <!-- JavaScript Logic -->
     <script>
-        // ============================================
-        // THEME TOGGLE FUNCTIONALITY
-        // ============================================
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
-        const html = document.documentElement;
+        // --- 1. Theme Toggle Logic ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+        const htmlElement = document.documentElement;
 
-        // Load saved theme
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        html.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme);
-
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
-            
-            showNotification(`${newTheme === 'dark' ? '🌙 Dark' : '☀️ Light'} mode activated`, 'success');
-        });
-
-        function updateThemeIcon(theme) {
-            if (theme === 'dark') {
-                // Sun icon
-                themeIcon.innerHTML = `
-                    <circle cx="12" cy="12" r="5"/>
-                    <line x1="12" y1="1" x2="12" y2="3"/>
-                    <line x1="12" y1="21" x2="12" y2="23"/>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                    <line x1="1" y1="12" x2="3" y2="12"/>
-                    <line x1="21" y1="12" x2="23" y2="12"/>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                `;
+        function toggleTheme() {
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
             } else {
-                // Moon icon
-                themeIcon.innerHTML = `
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                `;
+                htmlElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
             }
         }
 
-        // ============================================
-        // NOTIFICATION SYSTEM
-        // ============================================
-        function showNotification(message, type = 'success') {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.className = `notification ${type}`;
-            
-            // Show notification
-            setTimeout(() => notification.classList.add('show'), 100);
-            
-            // Hide after 3 seconds
-            setTimeout(() => notification.classList.remove('show'), 3000);
+        // Initialize Theme
+        if (localStorage.getItem('theme') === 'light') {
+            htmlElement.classList.remove('dark');
+        } else {
+            htmlElement.classList.add('dark');
         }
 
-        // ============================================
-        // FLOATING PARTICLES
-        // ============================================
-        const particlesContainer = document.getElementById('particles');
-        const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#10b981'];
-        
-        for (let i = 0; i < 50; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.width = (Math.random() * 4 + 2) + 'px';
-            particle.style.height = particle.style.width;
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-            particle.style.animationDelay = Math.random() * 15 + 's';
-            particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
-            particlesContainer.appendChild(particle);
-        }
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        if(themeToggleMobile) themeToggleMobile.addEventListener('click', toggleTheme);
 
-        // ============================================
-        // SMOOTH SCROLLING
-        // ============================================
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'start' 
-                    });
-                }
-            });
+
+        // --- 2. Spotlight Effect ---
+        const spotlight = document.getElementById('spotlight');
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+            spotlight.style.background = `radial-gradient(600px circle at ${x}px ${y}px, rgba(99, 102, 241, 0.15), transparent 40%)`;
         });
 
-        // ============================================
-        // SCROLL REVEAL ANIMATION
-        // ============================================
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    
-                    // Animate skill bars when they come into view
-                    if (entry.target.classList.contains('skill-category')) {
-                        const progressBars = entry.target.querySelectorAll('.skill-progress');
-                        progressBars.forEach(bar => {
-                            const width = bar.getAttribute('data-width');
-                            setTimeout(() => {
-                                bar.style.width = width + '%';
-                            }, 100);
-                        });
-                    }
-                    
-                    // Animate stat numbers
-                    if (entry.target.classList.contains('stat-card')) {
-                        const statNumber = entry.target.querySelector('.stat-number');
-                        animateNumber(statNumber);
-                    }
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
-
-        // ============================================
-        // ANIMATE NUMBERS (STATS)
-        // ============================================
-        function animateNumber(element) {
-            const target = parseFloat(element.getAttribute('data-target'));
-            const duration = 2000;
-            const increment = target / (duration / 16);
-            let current = 0;
-            
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    element.textContent = target;
-                    clearInterval(timer);
-                } else {
-                    element.textContent = Math.floor(current * 10) / 10;
-                }
-            }, 16);
-        }
-
-        // ============================================
-        // ACTIVE NAV LINK ON SCROLL
-        // ============================================
+        // --- 3. Scroll To Top ---
+        const scrollBtn = document.getElementById('scroll-to-top');
         window.addEventListener('scroll', () => {
-            let current = '';
+            if (window.scrollY > 500) {
+                scrollBtn.classList.remove('translate-y-20', 'opacity-0');
+            } else {
+                scrollBtn.classList.add('translate-y-20', 'opacity-0');
+            }
+        });
+
+        // --- 4. Typewriter Effect ---
+        const titles = ["Electrical-Mechatronics Engineer", "Robotics Enthusiast", "AI Researcher", "Problem Solver"];
+        const typewriterElement = document.getElementById('typewriter');
+        let titleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typeSpeed = 100;
+
+        function typeWriter() {
+            const currentTitle = titles[titleIndex];
             
-            document.querySelectorAll('section').forEach(section => {
+            if (isDeleting) {
+                typewriterElement.textContent = currentTitle.substring(0, charIndex - 1);
+                charIndex--;
+                typeSpeed = 50;
+            } else {
+                typewriterElement.textContent = currentTitle.substring(0, charIndex + 1);
+                charIndex++;
+                typeSpeed = 100;
+            }
+
+            if (!isDeleting && charIndex === currentTitle.length) {
+                isDeleting = true;
+                typeSpeed = 2000;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                titleIndex = (titleIndex + 1) % titles.length;
+                typeSpeed = 500;
+            }
+
+            setTimeout(typeWriter, typeSpeed);
+        }
+        
+        document.addEventListener('DOMContentLoaded', typeWriter);
+
+        // --- 5. Scroll Progress & Navigation ---
+        const progressBar = document.getElementById('progress-bar');
+        const navbar = document.getElementById('navbar');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section');
+
+        window.addEventListener('scroll', () => {
+            const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = (window.scrollY / totalHeight) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-white/80', 'dark:bg-slate-950/70', 'backdrop-blur-md', 'border-gray-200', 'dark:border-white/5', 'py-2');
+                navbar.classList.remove('py-4', 'border-transparent');
+            } else {
+                navbar.classList.remove('bg-white/80', 'dark:bg-slate-950/70', 'backdrop-blur-md', 'border-gray-200', 'dark:border-white/5', 'py-2');
+                navbar.classList.add('py-4', 'border-transparent');
+            }
+
+            let current = '';
+            sections.forEach(section => {
                 const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (pageYOffset >= sectionTop - 200) {
+                if (window.scrollY >= sectionTop - 150) {
                     current = section.getAttribute('id');
                 }
             });
 
-            document.querySelectorAll('nav a').forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('active');
+            navLinks.forEach(link => {
+                link.classList.remove('text-indigo-600', 'dark:text-indigo-400');
+                if (link.getAttribute('data-section') === current) {
+                    link.classList.add('text-indigo-600', 'dark:text-indigo-400');
                 }
             });
         });
 
-        // ============================================
-        // PARALLAX EFFECT ON HERO
-        // ============================================
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero-content');
-            
-            if (hero && scrolled < window.innerHeight) {
-                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
-                hero.style.opacity = 1 - scrolled / 800;
-            }
-        });
+        // --- 6. Mobile Menu ---
+        const mobileMenu = document.getElementById('mobile-menu');
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+        }
+        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
 
-        // ============================================
-        // EASTER EGGS & HIDDEN FEATURES
-        // ============================================
-        
-        // 1. Secret code typing
-        let secretCode = '';
-        let codeTimer;
-        
-        document.addEventListener('keypress', (e) => {
-            secretCode += e.key.toLowerCase();
-            
-            clearTimeout(codeTimer);
-            codeTimer = setTimeout(() => {
-                secretCode = '';
-            }, 2000);
-            
-            // Check for secret codes
-            if (secretCode.includes('dev')) {
-                showNotification('👨‍💻 Developer mode activated!', 'success');
-                console.log('Welcome to the console, fellow developer! 🚀');
-                secretCode = '';
-            } else if (secretCode.includes('theme')) {
-                showNotification('🎨 Theme info: ' + html.getAttribute('data-theme'), 'success');
-                secretCode = '';
-            } else if (secretCode.includes('rocket')) {
-                activateRocketMode();
-                secretCode = '';
-            }
-        });
+        // --- 7. Scroll Reveal ---
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, observerOptions);
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // 2. Click logo multiple times for surprise
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) element.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- EASTER EGGS ---
+
+        // 1. Party Mode (Click Profile 5 times)
         let clickCount = 0;
-        const nameTitle = document.getElementById('nameTitle');
+        const profileImg = document.getElementById('profile-img');
+        const profileContainer = document.getElementById('profile-container');
         
-        nameTitle.addEventListener('click', () => {
+        profileContainer.addEventListener('click', () => {
             clickCount++;
+            profileImg.style.transform = `rotate(${clickCount * 15}deg) scale(1.1)`;
             
             if (clickCount === 5) {
-                showNotification('🎉 You found the secret! Keep exploring!', 'success');
-                nameTitle.style.animation = 'none';
-                setTimeout(() => {
-                    nameTitle.style.animation = 'fadeInUp 1s ease-out, float 3s ease-in-out infinite';
-                }, 10);
+                alert("🎉 PARTY MODE ACTIVATED! 🎉");
+                document.body.classList.add('animate-gradient');
+                document.body.style.backgroundImage = "linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000)";
                 clickCount = 0;
             }
+            setTimeout(() => { profileImg.style.transform = ''; }, 500);
         });
 
-        // 3. Konami Code Easter Egg
-        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-        let konamiIndex = 0;
-        
+        // 2. Visitor Counter Simulation
+        const visitorCountEl = document.getElementById('visitor-count');
+        let count = 124;
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                count += Math.floor(Math.random() * 3);
+                visitorCountEl.textContent = `Live Visitors: ${count}`;
+                visitorCountEl.parentElement.classList.add('scale-110');
+                setTimeout(() => visitorCountEl.parentElement.classList.remove('scale-110'), 200);
+            }
+        }, 3000);
+
+        // 3. Matrix Rain (Press '~' key)
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        let matrixInterval;
+
         document.addEventListener('keydown', (e) => {
-            if (e.key === konamiCode[konamiIndex]) {
-                konamiIndex++;
-                if (konamiIndex === konamiCode.length) {
-                    activateKonamiMode();
-                    konamiIndex = 0;
-                }
-            } else {
-                konamiIndex = 0;
-            }
-        });
-
-        function activateKonamiMode() {
-            showNotification('🎮 KONAMI CODE ACTIVATED! Ultimate Power Unlocked!', 'success');
-            document.body.style.animation = 'rainbow 2s linear infinite';
-            
-            setTimeout(() => {
-                document.body.style.animation = '';
-            }, 5000);
-        }
-
-        function activateRocketMode() {
-            showNotification('🚀 ROCKET MODE! Scroll speed increased!', 'warning');
-            document.documentElement.style.scrollBehavior = 'auto';
-            
-            setTimeout(() => {
-                document.documentElement.style.scrollBehavior = 'smooth';
-            }, 5000);
-        }
-
-        // ============================================
-        // PROJECT CARDS INTERACTION
-        // ============================================
-        document.querySelectorAll('.project-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-10px) scale(1.02) rotateZ(1deg)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = '';
-            });
-        });
-
-        // ============================================
-        // PROFILE IMAGE CLICK EASTER EGG
-        // ============================================
-        const profileImage = document.querySelector('.profile-image');
-        let spinCount = 0;
-        
-        profileImage.addEventListener('click', () => {
-            spinCount++;
-            profileImage.style.transform = `rotate(${spinCount * 360}deg) scale(1.2)`;
-            
-            setTimeout(() => {
-                profileImage.style.transform = '';
-            }, 1000);
-            
-            if (spinCount >= 3) {
-                showNotification('🌟 You\'re having fun! Keep clicking around!', 'success');
-                spinCount = 0;
-            }
-        });
-
-        // ============================================
-        // DYNAMIC GREETING BASED ON TIME
-        // ============================================
-        function updateGreeting() {
-            const hour = new Date().getHours();
-            let greeting = '';
-            
-            if (hour < 12) greeting = 'Good morning';
-            else if (hour < 18) greeting = 'Good afternoon';
-            else greeting = 'Good evening';
-            
-            console.log(`${greeting}! Welcome to my portfolio 🎓`);
-        }
-        
-        updateGreeting();
-
-        // ============================================
-        // ADD CUSTOM CSS ANIMATION FOR RAINBOW
-        // ============================================
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes rainbow {
-                0% { filter: hue-rotate(0deg); }
-                100% { filter: hue-rotate(360deg); }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // ============================================
-        // WELCOME MESSAGE
-        // ============================================
-        console.log('%c🎓 Welcome to Zhong Xian Sim\'s Portfolio!', 'font-size: 20px; color: #6366f1; font-weight: bold;');
-        console.log('%c💡 Try these Easter eggs:', 'font-size: 14px; color: #8b5cf6;');
-        console.log('%c  - Type "dev" anywhere on the page', 'color: #10b981;');
-        console.log('%c  - Type "theme" to see current theme', 'color: #10b981;');
-        console.log('%c  - Type "rocket" for speed mode', 'color: #10b981;');
-        console.log('%c  - Click the name 5 times', 'color: #10b981;');
-        console.log('%c  - Click the profile image 3 times', 'color: #10b981;');
-        console.log('%c  - Try the Konami Code: ↑↑↓↓←→←→BA', 'color: #10b981;');
-        console.log('%c📧 Contact: simxian@graduate.utm.my', 'font-size: 12px; color: #ec4899;');
-
-        // ============================================
-        // PERFORMANCE OPTIMIZATION
-        // ============================================
-        
-        // Lazy load images
-        if ('IntersectionObserver' in window) {
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        if (img.dataset.src) {
-                            img.src = img.dataset.src;
-                            img.removeAttribute('data-src');
-                        }
-                        observer.unobserve(img);
-                    }
-                });
-            });
-
-            document.querySelectorAll('img[data-src]').forEach(img => {
-                imageObserver.observe(img);
-            });
-        }
-
-        // Debounce scroll events
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-
-        // ============================================
-        // ACCESSIBILITY ENHANCEMENTS
-        // ============================================
-        
-        // Skip to content link
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Tab' && !e.shiftKey && document.activeElement === document.body) {
-                const firstSection = document.querySelector('section');
-                if (firstSection) {
-                    e.preventDefault();
-                    firstSection.focus();
+            if (e.key === '`' || e.key === '~') {
+                if (canvas.style.display === 'block') {
+                    canvas.style.display = 'none';
+                    clearInterval(matrixInterval);
+                } else {
+                    canvas.style.display = 'block';
+                    startMatrix();
                 }
             }
         });
 
-        // ============================================
-        // INITIALIZE ON LOAD
-        // ============================================
-        window.addEventListener('load', () => {
-            // Animate stats on page load if visible
-            document.querySelectorAll('.stat-card').forEach(card => {
-                if (card.getBoundingClientRect().top < window.innerHeight) {
-                    const statNumber = card.querySelector('.stat-number');
-                    animateNumber(statNumber);
+        function startMatrix() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%";
+            const fontSize = 16;
+            const columns = canvas.width / fontSize;
+            const drops = [];
+            for (let x = 0; x < columns; x++) drops[x] = 1;
+
+            function draw() {
+                ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "#0F0";
+                ctx.font = fontSize + "px arial";
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
                 }
-            });
-            
-            // Show welcome notification
-            setTimeout(() => {
-                showNotification('👋 Welcome! Explore my portfolio and find hidden features!', 'success');
-            }, 1000);
-        });
+            }
+            matrixInterval = setInterval(draw, 33);
+        }
     </script>
 </body>
 </html>
