@@ -1,90 +1,843 @@
 <!DOCTYPE html>
 <html lang="en">
-    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sim Zhong Xian's Profile</title>
+    <title>Zhong Xian Sim - Academic Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f1f5f9;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.6;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-100vh) translateX(50px); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 60px;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-content .subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--light);
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s backwards;
+        }
+
+        .hero-content .description {
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: rgba(241, 245, 249, 0.8);
+            animation: fadeInUp 1s ease-out 0.4s backwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.6s backwards;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--light);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: rgba(241, 245, 249, 0.8);
+            margin-top: 0.5rem;
+        }
+
+        /* Experience Cards */
+        .experience-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .exp-card {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .exp-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .exp-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .exp-card:hover {
+            transform: translateX(10px);
+            border-color: var(--primary);
+        }
+
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .exp-title {
+            font-size: 1.5rem;
+            color: var(--light);
+            margin-bottom: 0.5rem;
+        }
+
+        .exp-company {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .exp-date {
+            color: rgba(241, 245, 249, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .exp-description {
+            color: rgba(241, 245, 249, 0.8);
+            line-height: 1.6;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+            border-color: var(--accent);
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .project-description {
+            color: rgba(241, 245, 249, 0.8);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .project-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .project-link:hover {
+            color: var(--accent);
+        }
+
+        /* Skills Section */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-category {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .skill-category h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .skill-item {
+            margin-bottom: 1rem;
+        }
+
+        .skill-name {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+        }
+
+        .skill-bar {
+            height: 8px;
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            transition: width 1s ease-out;
+            width: 0;
+        }
+
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .contact-card {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-card a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .contact-card a:hover {
+            color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(15, 23, 42, 0.8);
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        /* Scroll Animation */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease-out;
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1rem;
+            }
+
+            section {
+                padding: 3rem 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <table cellspacing = "30">
-        <tr> <td><img src="images\SIM ZHONG XIAN.png" sizes="1" alt="Profile Picture"></td>
-        <td><h1>Sim Zhong Xian</h1>
-            <p><em><a href="https://www.utm.my/">University Teknologi Malaysia</a></em></p>
-            <p>A year 3 student in disipline of mechatronic engineering</p>
-            <p>Nice to meet you!</p><td>
-
-        </tr>
-    </table>
-   
+    <div class="bg-animation"></div>
     
-    <hr size="5" noshade="1"> 
+    <!-- Floating Particles -->
+    <div id="particles"></div>
 
-    <h3>Extra-cocuricular Experiences</h3>
-    <ul>
-        <li>AIESEC in Johor Bahru</li>
-            <ol start="i">
-                <li>Director of Marketing, Youth Leadership Programme</li>
-                <li>Vice Director of Decoration & Photography, Awards' Night</li>
-                <li>Orgnising Committee National Induction Leadership Conference</li>
-                <li>Organising Committee University Relation</li>
-                <li>Organising Committee HELIO Project </li>
-            </ol>
-        <li>AIESEC in Malaysia</li>
-            <ol start="i">
-            <li>Entity Support Team (People Management Department)</li>
-            <li>Entity Support Team (ECHO Project Manager)</li>
-            </ol>
-        <li>Young Malaysian Engineers (YME)</li>
-        <ol start="i">
-            <li>MSTC’23 Human Resources Director </li>
-            </ol>
-     <li>Institute of Engineering Malaysia UTM Student Section (IEM-UTMSS)</li>        
-        <ol start="i">
-            <li>Head of department of Planning Department</li>
-            <li>Director of Employability Series 3.0</li>
-            </ol>
-    <li>UTM Chinese Orchestra</li>
-        <ol start="i">
-        <li>Head of department of String Department | 2022/23</li>
-        </ol>
-    </ul>
-    <hr size="5" noshade="1"> 
-    <h3>Skills</h3>
-    
-    <table border="2">
-        <thead>
-        <tr>
-        <th>Beginner</th>
-        <th>Intermediate</th>
-        <th>Advance</th>
-        </tr>
-        </thead>
-        <tbody> 
-        <tr>
-            <td>HTML</td>
-            <td>Mathlab</td>
-            <td>Multisim</td>
-        </tr>
-        <tr>
-            <td>C</td>
-            <td>VS studio</td>
-            <td>Solidworks Essential</td>
-        </tr>
-        <tr>
-            <td>Python</td>
-            <td>Photoshop</td>
-            <td>Solidwork Sheet Metal</td>
-        </tr>
-        <tr>
-            <td>Github</td>
-            <td>Atmel</td>
-            <td>Quartus</td>
-        </tr>
-        </tbody>
-    </table>
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
-    <h4><a href="Contact.html">Connect With Me!</a></h4>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Zhong Xian Sim</h1>
+            <div class="subtitle">Electrical-Mechatronics Engineer</div>
+            <div class="description">
+                Passionate about robotics, AI, and innovative engineering solutions. 
+                Dean's List holder for 8 semesters with expertise in mechatronics systems, 
+                machine learning, and embedded systems design.
+            </div>
+            <div class="cta-buttons">
+                <a href="#projects" class="btn btn-primary">View My Work</a>
+                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+            </div>
+        </div>
+    </section>
 
+    <!-- Stats Section -->
+    <section id="about">
+        <h2 class="section-title scroll-reveal">Academic Excellence</h2>
+        <div class="stats-grid">
+            <div class="stat-card scroll-reveal">
+                <div class="stat-number">3.95</div>
+                <div class="stat-label">CGPA / 4.0</div>
+            </div>
+            <div class="stat-card scroll-reveal">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Dean's List Semesters</div>
+            </div>
+            <div class="stat-card scroll-reveal">
+                <div class="stat-number">7.0</div>
+                <div class="stat-label">IELTS Band</div>
+            </div>
+            <div class="stat-card scroll-reveal">
+                <div class="stat-number">5+</div>
+                <div class="stat-label">Major Projects</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <h2 class="section-title scroll-reveal">Experience</h2>
+        <div class="experience-grid">
+            <div class="exp-card scroll-reveal">
+                <div class="exp-header">
+                    <div>
+                        <div class="exp-title">Robotics Research Intern</div>
+                        <div class="exp-company">A*STAR, Singapore</div>
+                    </div>
+                    <div class="exp-date">Sep 2025 - Nov 2025 (Expected)</div>
+                </div>
+                <div class="exp-description">
+                    Working on advanced robotics projects with ROS2, Robotic Arm, Dexterous Hand and Tactile Sensors. 
+                    Recipient of A*STAR Singapore International Pre-Graduate Award (SIPGA).
+                </div>
+            </div>
+
+            <div class="exp-card scroll-reveal">
+                <div class="exp-header">
+                    <div>
+                        <div class="exp-title">Design Verification Intern</div>
+                        <div class="exp-company">Advanced Micro Devices (AMD)</div>
+                    </div>
+                    <div class="exp-date">Jul 2024 - Oct 2024</div>
+                </div>
+                <div class="exp-description">
+                    Executed tests and scripting on UNIX-based systems. Developed data scraping tools from HTMLs to Excel 
+                    and optimized Python and C shell scripts for improved efficiency.
+                </div>
+            </div>
+
+            <div class="exp-card scroll-reveal">
+                <div class="exp-header">
+                    <div>
+                        <div class="exp-title">Technical Trainee Intern</div>
+                        <div class="exp-company">CADVision System</div>
+                    </div>
+                    <div class="exp-date">Aug 2023 - Sep 2023</div>
+                </div>
+                <div class="exp-description">
+                    Assisted Application Engineers with SolidWorks training and participated in business processes 
+                    for customer inquiries.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2 class="section-title scroll-reveal">Featured Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card scroll-reveal">
+                <div class="project-title">CHIPS: Cardiovascular Health Insight System</div>
+                <div class="project-description">
+                    AI-powered cardiovascular disease prediction system integrating IoT sensors with neural networks. 
+                    Uses MAX30102 pulse oximeter and blood pressure monitoring for real-time health insights.
+                </div>
+                <a href="https://github.com/simzx02/cardio" target="_blank" class="project-link">View on GitHub →</a>
+            </div>
+
+            <div class="project-card scroll-reveal">
+                <div class="project-title">KongsiPark: Smart Parking System</div>
+                <div class="project-description">
+                    Startup project developing an intelligent parking management solution. 
+                    Awarded RM2k at Student Innovator Challenge and RM5k seed grant from The Next Big Thing Competition.
+                </div>
+                <a href="#" class="project-link">Learn More →</a>
+            </div>
+
+            <div class="project-card scroll-reveal">
+                <div class="project-title">Contact Lens Packaging Detector</div>
+                <div class="project-description">
+                    Smart manufacturing system using AI-trained computer vision to detect defects in contact lens packaging. 
+                    Integrates pneumatic systems to reduce manufacturing defects.
+                </div>
+                <a href="https://github.com/simzx02/Capstone-Contact-Lens-Packaging-Detector-Optimizer" target="_blank" class="project-link">View on GitHub →</a>
+            </div>
+
+            <div class="project-card scroll-reveal">
+                <div class="project-title">Radiation Detection Robot</div>
+                <div class="project-description">
+                    Autonomous robot designed to navigate grids, detect high radiation materials, and display data 
+                    using 7-segment displays. Complete with CAD design and embedded C programming.
+                </div>
+                <a href="#" class="project-link">Learn More →</a>
+            </div>
+
+            <div class="project-card scroll-reveal">
+                <div class="project-title">Water Level PID Controller</div>
+                <div class="project-description">
+                    Arduino-based PID feedback control system for water level management. 
+                    Practical implementation of control theory in mechatronic systems.
+                </div>
+                <a href="#" class="project-link">Learn More →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <h2 class="section-title scroll-reveal">Technical Skills</h2>
+        <div class="skills-container">
+            <div class="skill-category scroll-reveal">
+                <h3>Programming</h3>
+                <div class="skill-item">
+                    <div class="skill-name"><span>Python</span><span>Advanced</span></div>
+                    <div class="skill-bar"><div class="skill-progress" data-width="90"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name"><span>C Programming</span><span>Advanced</span></div>
+                    <div class="skill-bar"><div class="skill-progress" data-width="85"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name"><span>Verilog</span><span>Intermediate</span></div>
+                    <div class="skill-bar"><div class="skill-progress" data-width="70"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name"><span>C Shell</span><span>Beginner</span></div>
+                    <div class="skill-bar"><div class="skill-progress" data-width="50"></div></div>
+                </div>
+            </div>
+
+            <div class="skill-category scroll-reveal">
+                <h3>Robotics & AI</h3>
+                <div class="skill-item">
+                    <div class="skill-name"><span>ROS1/2</span><span>Intermediate</span></div>
+                    <div class="skill-bar"><div class="skill-progress" data-width="70"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name"><span>Unity</span><span>Intermediate</span></div>
+                    <div class="skill-bar"><div class="skill-progress" data-width="65"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name"><span>MATLAB & Simulink</span><span>Intermediate</span></div>
+                    <div class="skill-bar"><div class="skill-progress" data-width="75"></div></div>
+                </div>
+            </div>
+
+            <div class="skill-category scroll-reveal">
+                <h3>Tools & Platforms</h3>
+                <div class="skill-item">
+                    <div class="skill-name"><span>Git & GitHub</span><span>Advanced</span></div>
+                    <div class="skill-bar"><div class="skill-progress" data-width="85"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name"><span>Linux CLI</span><span>Advanced</span></div>
+                    <div class="skill-bar"><div class="skill-progress" data-width="80"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name"><span>SolidWorks</span><span>Intermediate</span></div>
+                    <div class="skill-bar"><div class="skill-progress" data-width="75"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name"><span>Arduino IDE</span><span>Intermediate</span></div>
+                    <div class="skill-bar"><div class="skill-progress" data-width="80"></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title scroll-reveal">Get In Touch</h2>
+        <div class="contact-grid">
+            <div class="contact-card scroll-reveal">
+                <div class="contact-icon">📧</div>
+                <h3>Email</h3>
+                <a href="mailto:simxian@graduate.utm.my">simxian@graduate.utm.my</a><br>
+                <a href="mailto:zex.sim02@gmail.com">zex.sim02@gmail.com</a>
+            </div>
+            <div class="contact-card scroll-reveal">
+                <div class="contact-icon">💼</div>
+                <h3>LinkedIn</h3>
+                <a href="https://www.linkedin.com/in/simzhongxian/" target="_blank">linkedin.com/in/simzhongxian</a>
+            </div>
+            <div class="contact-card scroll-reveal">
+                <div class="contact-icon">📱</div>
+                <h3>Phone</h3>
+                <a href="tel:+60146002369">+6014-6002369</a>
+            </div>
+            <div class="contact-card scroll-reveal">
+                <div class="contact-icon">🇲🇾</div>
+                <h3>Location</h3>
+                <p>Johor, Malaysia</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Zhong Xian Sim. All rights reserved.</p>
+        <p>Built with passion for engineering excellence</p>
+    </footer>
+
+    <script>
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    
+                    // Animate skill bars when they come into view
+                    if (entry.target.classList.contains('skill-category')) {
+                        const progressBars = entry.target.querySelectorAll('.skill-progress');
+                        progressBars.forEach(bar => {
+                            const width = bar.getAttribute('data-width');
+                            setTimeout(() => {
+                                bar.style.width = width + '%';
+                            }, 100);
+                        });
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        // Parallax effect on hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero-content');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+                hero.style.opacity = 1 - scrolled / 700;
+            }
+        });
+
+        // Active nav link on scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            document.querySelectorAll('section').forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
+
