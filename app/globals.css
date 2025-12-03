@@ -1,0 +1,25 @@
+/* src/app/globals.css or equivalent */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Ensure global selection styles are applied */
+.dark ::selection {
+  background-color: #4f46e5; /* indigo-600 */
+  color: white;
+}
+.light ::selection {
+  background-color: #6366f1; /* indigo-500 */
+  color: white;
+}
+
+/* Configure the gradient size for the animation */
+.animate-gradient {
+  background-size: 200% auto;
+}
