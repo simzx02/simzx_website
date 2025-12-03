@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "components/UpdatesSection.js"  ],
+, "components/UpdatesSection.js", "components/MatrixRain.js"  ],
   "exclude": ["node_modules"]
 }
