@@ -63,7 +63,7 @@ export default function Page() {
     const [partyMode, setPartyMode] = useState(false);
     const [clickCount, setClickCount] = useState(0);
     const [showMatrix, setShowMatrix] = useState(false);
-    const [visitorCount, setVisitorCount] = useState(124);
+    //const [visitorCount, setVisitorCount] = useState(124);
 
     const typewriterText = useTypewriter(portfolioConfig.personal.titles);
 
@@ -111,14 +111,14 @@ export default function Page() {
     }, []);
 
     // Visitor Counter Simulation Effect
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (Math.random() > 0.7) {
-                setVisitorCount(prev => prev + Math.floor(Math.random() * 3));
-            }
-        }, 3000);
-        return () => clearInterval(interval);
-    }, []);
+    //useEffect(() => {
+    //    const interval = setInterval(() => {
+    //        if (Math.random() > 0.7) {
+    //            setVisitorCount(prev => prev + Math.floor(Math.random() * 3));
+    //        }
+    //    }, 3000);
+    //    return () => clearInterval(interval);
+    //}, []);
 
 
     // --- HANDLERS ---
@@ -193,7 +193,7 @@ export default function Page() {
                 <UpdatesSection data={portfolioConfig.updates} />
 
                 {/* 9. CONTACT (Component Call) */}
-                <ContactSection contact={portfolioConfig.contact} visitorCount={visitorCount} />
+                <ContactSection contact={portfolioConfig.contact}  /> 
             </main>
 
             {/* SCROLL TO TOP */}

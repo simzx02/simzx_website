@@ -1,18 +1,36 @@
 // src/components/ProjectsGrid.js
 import React from 'react';
-import { Github, Eye, ChevronRight } from 'lucide-react'; // <-- FIX: Added ChevronRight here
+import { Github, Eye, ChevronRight } from 'lucide-react';
 
 const ProjectCard = ({ project }) => (
     <div className="group relative rounded-2xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-white/5 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-indigo-500/20 hover:-translate-y-2">
-        <div className="h-48 bg-gradient-to-br from-indigo-100 to-white dark:from-slate-800 dark:to-slate-900 relative overflow-hidden">
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:20px_20px]"></div>
-            <div className="absolute top-4 left-4 p-2 bg-white/50 dark:bg-black/50 backdrop-blur-md rounded-lg border border-black/5 dark:border-white/10 text-3xl">
-                {project.icon}
-            </div>
+        
+        {/* 🚀 IMAGE CONTAINER - NO ICONS */}
+        <div className="h-48 relative overflow-hidden">
+            {project.image ? (
+                // Use the provided image
+                <img
+                    src={project.image}
+                    alt={`${project.title} screenshot`}
+                    // object-cover ensures the image fills the 12rem (h-48) height without stretching
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                    loading="lazy"
+                />
+            ) : (
+                // Fallback to the original gradient background
+                <div className="h-full bg-gradient-to-br from-indigo-100 to-white dark:from-slate-800 dark:to-slate-900 relative">
+                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+                </div>
+            )}
+            
+            {/* NOTE: Project Icon Overlay DIV has been REMOVED */}
         </div>
+        
         <div className="p-6 relative z-10">
             <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{project.title}</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-3">{project.description}</p>
+            
+            {/* ... Tags and Links ... */}
             <div className="flex flex-wrap gap-2 mb-6">
                 {project.tags.map((tag, i) => (
                     <span key={i} className="px-2 py-1 text-xs rounded bg-indigo-50 dark:bg-slate-800 text-indigo-700 dark:text-slate-300 border border-indigo-100 dark:border-slate-700">{tag}</span>
