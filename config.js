@@ -125,12 +125,12 @@ export const portfolioConfig = {
   ],
 
   experience: [
-    {
-      period: "Dec 2025 - Feb 2025",
-      role: " Research Intern",
-      company: "USM INOR, Penang, Malaysia",
-      description: "Exploring...",
-    },
+    //{
+    //  period: "Dec 2025 - Feb 2025",
+    //  role: " Research Intern",
+    //  company: "USM INOR, Penang, Malaysia",
+    //  description: "Exploring...",
+    //},
     {
       period: "Sep 2025 - Nov 2025",
       role: "Robotics Research Intern",
@@ -193,13 +193,13 @@ export const portfolioConfig = {
   ],
 
   updates: [
-    {
-      date: "Nov 30, 2025",
-      title: "Offer from USM INOR accepted!",
-      description: "Excited as upcoming intern at USM!",
-      color: "blue",
-      link: "https://inor.usm.my/",
-    },
+    //{
+    //  date: "Nov 30, 2025",
+    //  title: "Offer from USM INOR accepted!",
+    //  description: "Excited as upcoming intern at USM!",
+    //  color: "blue",
+    //  link: "https://inor.usm.my/",
+    //},
     {
       date: "Nov 28, 2025",
       title: "Completed SIPGA Internship!",
