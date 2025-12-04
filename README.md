@@ -1,6 +1,6 @@
-# 🚀 Zhong Xian Sim | Electrical-Mechatronics Portfolio
+# 🚀 Zhong Xian Sim | Electrical-Mechatronics Portfolio 
 
-## Overview
+## Overview ![visitor badge](https://visitor-badge.laobi.icu/badge?page_id=simzx02.visitor-badge&format=true) [![pages-build-deployment](https://github.com/simzx02/simzx_website/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/simzx02/simzx_website/actions/workflows/pages/pages-build-deployment)
 
 Welcome to the personal portfolio of Zhong Xian Sim, a dedicated Electrical-Mechatronics Engineer specializing in Robotics, AI, and innovative embedded systems. This project showcases my journey and key projects, built using a modern component-based architecture for performance, scalability, and ease of content management.
 
