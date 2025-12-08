@@ -38,11 +38,11 @@ The project follows the standard Next.js App Router convention with a modular co
 │   └── 1731061514308.jpg  # Profile picture and project images.
 └── src/
     ├── components/
-    │   ├── Nav.tsx          # Navigation, Theme Toggle, Scroll Highlighting.
-    │   ├── Hero.tsx         # Typewriter Effect, Profile Image.
-    │   ├── MatrixRain.tsx   # Canvas-based Easter Egg animation.
+    │   ├── Nav.js          # Navigation, Theme Toggle, Scroll Highlighting.
+    │   ├── Hero.js         # Typewriter Effect, Profile Image.
+    │   ├── MatrixRain.js   # Canvas-based Easter Egg animation.
     │   └── ...              # All other sectional components: ProjectsGrid, UpdatesSection, etc.
-    └── config.ts            # 🔑 CENTRAL CONTENT FILE: All editable text/data lives here.
+    └── config.js            # 🔑 CENTRAL CONTENT FILE: All editable text/data lives here.
 ```
 
 ## 🛠️ Getting Started (Local Development)
@@ -56,8 +56,8 @@ You need Node.js (version 18 or later) and npm installed on your system.
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/simzx02/zx-portfolio.git
-cd zx-portfolio
+git clone https://github.com/simzx02/simzx_website.git
+cd zsimzx_website
 ```
 
 2. **Install dependencies:**
